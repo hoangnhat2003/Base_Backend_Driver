@@ -17,9 +17,15 @@ public class BookingHistory {
 
     private String request_id;
     private String requester_account_id;
+
+    @Transient
     private VehicleInfo vehicle;
     private long requested_at;
+
+    @Transient
     private BookingLocation from;
+
+    @Transient
     private BookingLocation to;
     private Double distance;
     private String distance_unit;

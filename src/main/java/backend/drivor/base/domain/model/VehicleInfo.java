@@ -23,7 +23,7 @@ public class VehicleInfo {
     }
 
     public VehicleInfo(Vehicle vehicle) {
-        this(vehicle.getType(),
+        this(vehicle.getType().name(),
                 vehicle.getMake(),
                 vehicle.getSeats());
     }
