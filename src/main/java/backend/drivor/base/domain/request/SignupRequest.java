@@ -1,5 +1,7 @@
 package backend.drivor.base.domain.request;
 
+import backend.drivor.base.domain.annotation.Email;
+import backend.drivor.base.domain.annotation.Password;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -12,10 +14,10 @@ public class SignupRequest {
     @Size(min = 3, max = 20)
     private String username;
 
-    @NotBlank
+    @Email
     private String email;
 
-    @NotBlank
+    @Password
     private String password;
 
 }

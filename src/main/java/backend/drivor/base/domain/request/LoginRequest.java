@@ -1,18 +1,15 @@
 package backend.drivor.base.domain.request;
 
+import backend.drivor.base.domain.annotation.Email;
+import backend.drivor.base.domain.annotation.Password;
 import lombok.Data;
-import lombok.NonNull;
-
-import javax.validation.constraints.NotBlank;
 
 @Data
 public class LoginRequest {
 
-    @NonNull
-    @NotBlank
-    private String username;
+    @Email
+    private String email;
 
-    @NonNull
-    @NotBlank
+    @Password
     private String password;
 }
