@@ -3,21 +3,18 @@ package backend.drivor.base.domain.document;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
-@Table(name = "account")
+@Table(name = "action")
 @Entity
-public class Account {
+public class Action {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
-    private Integer chat_id;
-    private String password;
-    private String email;
-    private String account_status;
-    private String online_status;
-
+    private String action;
+    private Date createTime;
 }
