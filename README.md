@@ -5,7 +5,7 @@ Tech stack:
      - Spring boot
      - Authentication: JWT, OAuth2 | Return Access Token và Refresh Token
      - Message Queue: RabbitMQ
-     - Cache: Redis
+     - Cache: Redis, Jedis: Java Redis Client Library
      - Search Engine: ElasticSearch
      - Log Management: Elasticsearch, Logstash, Kibana
      - Docker
@@ -13,4 +13,13 @@ Tech stack:
      - Database: MySQL
      - Send message: Smack Client
      - Send SMS: Twilio
-     - AWS S3
+     - AWS S3 
+     - Monitoring: Grafana & Prometheus  
+
+
+Access Database: (Cài đặt DBeaver hoặc tạo connection mới trong MySQL WorkBench)
+   - DB name: backend-drivor
+   - Port: 3306
+   - Host: localhost
+   - Username: root
+   - Password: hoangnhat

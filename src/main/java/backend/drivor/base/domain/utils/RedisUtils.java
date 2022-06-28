@@ -58,7 +58,6 @@ public class RedisUtils {
         return null;
     }
 
-
     public static void delete(String key) {
         Jedis jedis = RedisClient.getClient();
         try {

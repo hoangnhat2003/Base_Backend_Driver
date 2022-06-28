@@ -6,6 +6,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.Set;
 
 @Data
 public class SignupRequest {
@@ -16,6 +17,8 @@ public class SignupRequest {
 
     @Email
     private String email;
+
+    private Set<String> role;
 
     @Password
     private String password;

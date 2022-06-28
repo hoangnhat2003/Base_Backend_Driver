@@ -55,7 +55,6 @@ public class LoggerUtil {
      *
      * @param tag
      * @param ex
-     * @param printStackTrace
      */
     public static void exception(String tag, Exception ex) {
         if (ex != null) {

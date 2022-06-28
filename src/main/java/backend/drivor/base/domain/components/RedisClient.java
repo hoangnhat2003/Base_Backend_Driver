@@ -42,16 +42,6 @@ public class RedisClient {
         }
     }
 
-    @PreDestroy
-    public void onDestroy() {
-        try {
-            if (instance != null && instance.jedisPool != null)
-                instance.jedisPool.destroy();
-        } catch (Exception e) {
-            LoggerUtil.e(TAG,  e.getMessage());
-        }
-    }
-
     public static Jedis getClient() {
         try {
             return instance.jedisPool.getResource();
