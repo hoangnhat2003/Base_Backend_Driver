@@ -6,6 +6,8 @@ import backend.drivor.base.domain.response.ApiResponse;
 
 public interface AccountService {
 
-     ApiResponse changePassword(Account account, ChangePasswordRequest request);
+     void changePassword(Account account, ChangePasswordRequest request);
+
+     Account findAccountByUsername(String username);
 
 }
