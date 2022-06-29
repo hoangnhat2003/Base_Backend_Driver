@@ -1,6 +1,5 @@
 package backend.drivor.base.config.security.jwt;
 
-import backend.drivor.base.domain.components.RedisClient;
 import backend.drivor.base.domain.utils.LoggerUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.MediaType;

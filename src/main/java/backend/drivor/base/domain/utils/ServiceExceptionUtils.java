@@ -18,7 +18,4 @@ public class ServiceExceptionUtils {
         return new TokenRefreshException(token, REFRESH_TOKEN_NOT_FOUND);
     }
 
-
-
-
 }

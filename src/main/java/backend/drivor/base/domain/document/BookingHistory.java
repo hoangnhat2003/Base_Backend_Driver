@@ -39,9 +39,6 @@ public class BookingHistory {
     private String waiting_fee_status;
     private long total_amount;
     private long driver_amount;
-    private long merchant_amount;
-    private long drivor_amount;
-
     private Long driver_account_id;
     private long accepted_at;
     private long canceled_at;
