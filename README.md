@@ -30,10 +30,13 @@ Access Database Local: (Cài đặt DBeaver hoặc tạo connection mới trong 
 Reference document:
    
    - RabbitMQ: https://www.springcloud.io/post/2022-03/messaging-using-rabbitmq-in-spring-boot-application/#gsc.tab=0
+     (Để truy cập vào RabbitMQ Web Admin, type command: `docker exec [CONTAINER_NAME] rabbitmq-plugins enable rabbitmq_management`, sau đó vào host: `http://localhost:15672`
+       Default account : Username: guest/Password: guest
+     )
    - Docker: https://www.docker.com/blog/kickstart-your-spring-boot-application-development/
    - Redis: https://viblo.asia/p/huong-dan-spring-boot-redis-aWj53NPGl6m || https://viblo.asia/p/redis-spring-boot-cache-aside-design-pattern-1Je5E6LLKnL
    - (Sử dụng Redis GUI để manage keys
-       Cách dowload Another Redis Desktop Manager - A GUI client for Redis:
+       . Cách dowload Another Redis Desktop Manager - A GUI client for Redis:
        Right click Command Prompt -> Run as administrator -> Type command : winget install qishibo.AnotherRedisDesktopManager
      )
    - Elasticsearch: https://reflectoring.io/spring-boot-elasticsearch/
