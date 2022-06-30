@@ -32,6 +32,10 @@ Reference document:
    - RabbitMQ: https://www.springcloud.io/post/2022-03/messaging-using-rabbitmq-in-spring-boot-application/#gsc.tab=0
    - Docker: https://www.docker.com/blog/kickstart-your-spring-boot-application-development/
    - Redis: https://viblo.asia/p/huong-dan-spring-boot-redis-aWj53NPGl6m || https://viblo.asia/p/redis-spring-boot-cache-aside-design-pattern-1Je5E6LLKnL
+   - (Sử dụng Redis GUI để manage keys
+       Cách dowload Another Redis Desktop Manager - A GUI client for Redis:
+       Right click Command Prompt -> Run as administrator -> Type command : winget install qishibo.AnotherRedisDesktopManager
+     )
    - Elasticsearch: https://reflectoring.io/spring-boot-elasticsearch/
    - Source code example of RabbitMQ, Redis, ES: https://github.com/hoangnhat2003/Shop-App
    - CI/CD with Travis CI: https://dzone.com/articles/applying-cicd-to-java-apps-using-spring-boot
