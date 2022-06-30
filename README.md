@@ -15,7 +15,7 @@ Tech stack:
      - Database: MySQL
      - Send message: Smack Client
      - Send SMS: Twilio
-     - AWS S3, RDS
+     - AWS S3
      - Monitoring: Grafana & Prometheus 
      - VNPAY API Integration ( Payment Service )
 

@@ -36,23 +36,21 @@ public class AccountServiceImpl  implements AccountService {
     public void changePassword(Account account, ChangePasswordRequest request) {
 
         String key = account.getId() + ":wrong_pw";
+        Long currentCount = null;
 
         boolean isSamePassword = Objects.equals(request.getCurrent_password().trim().toLowerCase(), request.getNew_password().trim().toLowerCase());
 
-        Object currentCount = null;
-
         if(redisCache.hasKey(key)) {
-            currentCount = redisCache.get(key);
+            currentCount = Long.parseLong(redisCache.get(key).toString());
         }
 
-        if(currentCount != null && (Long) currentCount > 5) {
+        if(currentCount != null && currentCount > 5) {
             throw ServiceExceptionUtils.permissionChangePasswordDenied();
         }
 
         if(isSamePassword)  {
             throw ServiceExceptionUtils.wrongPassword();
         }
-
         boolean isMatchesPassword = passwordEncoder.matches(request.getCurrent_password(), account.getPassword());
 
         if(!isMatchesPassword && !isSamePassword) {
@@ -68,9 +66,7 @@ public class AccountServiceImpl  implements AccountService {
         }
 
         String encodedPassword = passwordEncoder.encode(request.getNew_password());
-
         account.setPassword(encodedPassword);
-
         accountRepository.save(account);
     }
 
