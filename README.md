@@ -11,7 +11,7 @@ Tech stack:
      - Search Engine: ElasticSearch
      - Log Management: Elasticsearch, Logstash, Kibana
      - Docker
-     - CI/CD: Travis CI, Heruko
+     - CI/CD: Circle CI, Heruko
      - Database: MySQL
      - Send message: Smack Client
      - Send SMS: Twilio
@@ -41,6 +41,6 @@ Reference document:
      )
    - Elasticsearch: https://reflectoring.io/spring-boot-elasticsearch/
    - Source code example of RabbitMQ, Redis, ES: https://github.com/hoangnhat2003/Shop-App
-   - CI/CD with Travis CI: https://dzone.com/articles/applying-cicd-to-java-apps-using-spring-boot
+   - CI/CD with Circle CI: https://chatbotsmagazine.com/create-a-ci-cd-pipeline-with-circleci-to-deploy-your-bot-in-a-docker-image-to-heroku-32f5dfe887
    - Exception Handling in Spring boot App: https://viblo.asia/p/spring-boot-15-exception-handling-exceptionhandler-restcontrolleradvice-controlleradvice-responsestatus-maGK7k2eKj2
    - Elasticsearch, Logstash, Kibana: https://www.youtube.com/watch?v=uSYExRWbC9Y  (Xây dựng hệ thống log tập trung)
