@@ -4,8 +4,8 @@ Project xây dựng Backend API cho hệ thống đặt xe
 
 Tech stack:
 
-     - Spring boot
-     - Authentication: JWT, OAuth2 | Return Access Token và Refresh Token
+     - Spring boot, JPA, Hibernate
+     - Authentication: JWT, OAuth2 (Connect with Facebook, Google)
      - Message Queue: RabbitMQ
      - Cache: Redis
      - Search Engine: ElasticSearch
@@ -15,7 +15,7 @@ Tech stack:
      - Database: MySQL
      - Send message: Smack Client
      - Send SMS: Twilio
-     - AWS S3
+     - AWS: S3, RDS
      - Monitoring: Grafana & Prometheus 
      - VNPAY API Integration ( Payment Service )
 
