@@ -16,6 +16,9 @@ public class ServiceExceptionUtils {
 
     private static final String WRONG_PASSWORD = "You have been type wrong password";
 
+    private static final String INTERNAL_SERVER_ERROR = "Internal Server";
+
+
 
     public static TokenRefreshException verifiedRefreshTokenFailed(String token) {
         return new TokenRefreshException(token, ERROR_VERIFIED_REFRESH_TOKEN);
@@ -37,4 +40,7 @@ public class ServiceExceptionUtils {
         return new ServiceException(WRONG_PASSWORD, HttpStatus.BAD_REQUEST);
     }
 
+    public static ServiceException internalServerError() {
+        return new ServiceException(INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

@@ -24,7 +24,7 @@ public class AccountWallet {
     @OneToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
-    private String wallet_type;
+    private String walletType;
     private long balance;
 
 }

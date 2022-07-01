@@ -2,6 +2,7 @@ package backend.drivor.base.domain.handler;
 
 import backend.drivor.base.domain.exception.ServiceException;
 import backend.drivor.base.domain.exception.TokenRefreshException;
+import backend.drivor.base.domain.utils.ServiceExceptionUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,6 +16,12 @@ import java.io.IOException;
 public class ServiceExceptionHandler {
 
     private static HttpHeaders header;
+
+    @ExceptionHandler({Exception.class})
+    protected ResponseEntity<Object> handleRuntimeException(final Exception ex) {
+        ex.printStackTrace();
+        return new ResponseEntity<>(ServiceExceptionUtils.internalServerError().generateStringResponse(), header, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
     @ExceptionHandler({ServiceException.class})
     protected Object handleServiceException(HttpServletRequest req, HttpServletResponse res, final ServiceException ex) throws IOException {

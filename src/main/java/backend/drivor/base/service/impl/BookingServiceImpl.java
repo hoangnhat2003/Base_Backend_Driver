@@ -1,7 +1,9 @@
 package backend.drivor.base.service.impl;
 
 import backend.drivor.base.domain.components.BillingConfigurations;
+import backend.drivor.base.domain.constant.AccountWalletType;
 import backend.drivor.base.domain.document.Account;
+import backend.drivor.base.domain.document.AccountWallet;
 import backend.drivor.base.domain.repository.BookingHistoryRepository;
 import backend.drivor.base.domain.repository.VehicleRepository;
 import backend.drivor.base.domain.request.NewBookingRequest;
@@ -32,6 +34,9 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public BookingHistoryResponse newBookingRequest(Account account, NewBookingRequest request) {
+
+        AccountWallet debtWallet = accountWalletService.getOrCreateAccountWallet(account, AccountWalletType.DEBT_WALLET);
+
         return null;
     }
 }
