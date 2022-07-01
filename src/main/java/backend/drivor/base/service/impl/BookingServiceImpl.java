@@ -12,6 +12,7 @@ import backend.drivor.base.domain.response.BookingHistoryResponse;
 import backend.drivor.base.domain.utils.BigNumberCalculator;
 import backend.drivor.base.domain.utils.ServiceExceptionUtils;
 import backend.drivor.base.domain.utils.StringUtils;
+import backend.drivor.base.service.ServiceBase;
 import backend.drivor.base.service.inf.AccountService;
 import backend.drivor.base.service.inf.AccountWalletService;
 import backend.drivor.base.service.inf.BookingService;
@@ -23,28 +24,8 @@ import redis.clients.jedis.GeoUnit;
 import java.util.concurrent.TimeUnit;
 
 @Service
-public class BookingServiceImpl implements BookingService {
+public class BookingServiceImpl extends ServiceBase implements BookingService {
 
-    @Autowired
-    private BookingHistoryRepository bookingHistoryRepository;
-
-    @Autowired
-    private VehicleRepository vehicleRepository;
-
-    @Autowired
-    private AccountService accountService;
-
-    @Autowired
-    private AccountWalletService accountWalletService;
-
-    @Autowired
-    private BillingConfigurations billingConfigurations;
-
-    @Autowired
-    private RedisCache redisCache;
-
-    @Autowired
-    private ModelMapper mapper;
 
     @Override
     public BookingHistoryResponse newBookingRequest(Account account, NewBookingRequest request) {

@@ -5,6 +5,7 @@ import backend.drivor.base.domain.repository.AccountRepository;
 import backend.drivor.base.domain.request.ChangePasswordRequest;
 import backend.drivor.base.domain.components.RedisCache;
 import backend.drivor.base.domain.utils.ServiceExceptionUtils;
+import backend.drivor.base.service.ServiceBase;
 import backend.drivor.base.service.inf.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,16 +15,7 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @Service
-public class AccountServiceImpl  implements AccountService {
-
-    @Autowired
-    private AccountRepository accountRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private RedisCache redisCache;
+public class AccountServiceImpl extends ServiceBase implements AccountService {
 
     /**
      * Rate limit change password.

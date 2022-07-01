@@ -5,17 +5,16 @@ import backend.drivor.base.domain.document.Account;
 import backend.drivor.base.domain.document.AccountWallet;
 import backend.drivor.base.domain.repository.AccountWalletRepository;
 import backend.drivor.base.domain.utils.LoggerUtil;
+import backend.drivor.base.service.ServiceBase;
 import backend.drivor.base.service.inf.AccountWalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AccountWalletServiceImpl implements AccountWalletService {
+public class AccountWalletServiceImpl extends ServiceBase implements AccountWalletService {
 
     private static final String TAG = AccountWalletServiceImpl.class.getName();
 
-    @Autowired
-    private AccountWalletRepository accountWalletRepository;
 
     @Override
     public AccountWallet getOrCreateAccountWallet(Account account, String walletType) {
