@@ -4,4 +4,5 @@ import backend.drivor.base.domain.document.Vehicle;
 import org.springframework.data.repository.CrudRepository;
 
 public interface VehicleRepository extends CrudRepository<Vehicle, Long> {
+    Vehicle findByVehicleId(String vehicle_id);
 }

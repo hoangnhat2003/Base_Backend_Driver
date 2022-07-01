@@ -15,8 +15,8 @@ public class BookingHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String request_id;
-    private String requester_account_id;
+    private String requestId;
+    private Long requester_account_id;
 
     @Transient
     private VehicleInfo vehicle;

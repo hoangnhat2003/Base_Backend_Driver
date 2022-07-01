@@ -6,7 +6,6 @@ import backend.drivor.base.domain.document.Account;
 import backend.drivor.base.domain.document.RefreshToken;
 import backend.drivor.base.domain.document.Role;
 import backend.drivor.base.domain.enums.ERole;
-import backend.drivor.base.domain.exception.TokenRefreshException;
 import backend.drivor.base.domain.repository.AccountRepository;
 import backend.drivor.base.domain.repository.RoleRepository;
 import backend.drivor.base.domain.request.LoginRequest;
@@ -28,7 +27,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;

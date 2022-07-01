@@ -16,7 +16,7 @@ public class RedisCache {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
-    public void put(String key, Object value) {
+    public void set(String key, Object value) {
         try {
             ValueOperations<String, Object> operations = this.redisTemplate.opsForValue();
             operations.set(key, value);
@@ -25,7 +25,7 @@ public class RedisCache {
         }
     }
 
-    public void put(String key, Object value, int expire) {
+    public void setWithExpire(String key, Object value, int expire) {
         try {
             ValueOperations<String, Object> operations = this.redisTemplate.opsForValue();
             operations.set(key, value);

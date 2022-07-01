@@ -28,6 +28,32 @@ public class AccountWalletServiceImpl implements AccountWalletService {
         return null;
     }
 
+    @Override
+    public void lockBalance(AccountWallet accountWallet, long amount) {
+        long balance = accountWallet.getBalance();
+        try {
+            long updatedBalance = balance - amount;
+            accountWallet.setBalance(updatedBalance);
+            accountWalletRepository.save(accountWallet);
+        }catch (Exception e) {
+            LoggerUtil.e(TAG, e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void unlockBalance(AccountWallet accountWallet, long amount) {
+        long balance = accountWallet.getBalance();
+        try {
+            long updatedBalance = balance + amount;
+            accountWallet.setBalance(updatedBalance);
+            accountWalletRepository.save(accountWallet);
+        }catch (Exception e) {
+            LoggerUtil.e(TAG, e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
     private AccountWallet createAccountWallet(Account account, String walletType) {
 
         AccountWallet accountWallet = null;

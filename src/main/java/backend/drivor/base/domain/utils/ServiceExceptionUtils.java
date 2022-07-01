@@ -18,6 +18,20 @@ public class ServiceExceptionUtils {
 
     private static final String INTERNAL_SERVER_ERROR = "Internal Server";
 
+    private static final String ERROR_ACCOUNT_OWING = "This account is owing";
+
+    private static final String ERROR_VALUE_EXISTS = "Value exist: ";
+
+    private static final String ERROR_MISSING_PARAM = "Missing param: ";
+
+    private static final String ERROR_INVALID_PARAM = "Invalid param: ";
+
+    private static final String ERROR_VEHICLE_NOT_FOUND = "Vehicle not found in database";
+
+    private static final String ERROR_WALLET_NOT_FOUND = "Wallet not found";
+
+    private static final String ERROR_NOT_ENOUGH_BALANCE = "Not enough balance";
+
 
 
     public static TokenRefreshException verifiedRefreshTokenFailed(String token) {
@@ -42,5 +56,33 @@ public class ServiceExceptionUtils {
 
     public static ServiceException internalServerError() {
         return new ServiceException(INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    public static ServiceException accountOwing() {
+        return new ServiceException(ERROR_ACCOUNT_OWING, HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    public static ServiceException valueExists(String request_id) {
+        return new ServiceException(String.format(ERROR_VALUE_EXISTS, request_id), HttpStatus.BAD_REQUEST);
+    }
+
+    public static ServiceException missingParam(String param) {
+        return new ServiceException(String.format(ERROR_MISSING_PARAM, param), HttpStatus.BAD_REQUEST);
+    }
+
+    public static ServiceException invalidParam(String param) {
+        return new ServiceException(String.format(ERROR_INVALID_PARAM, param), HttpStatus.BAD_REQUEST);
+    }
+
+    public static ServiceException vehicleNotFound() {
+        return new ServiceException(ERROR_VEHICLE_NOT_FOUND, HttpStatus.BAD_REQUEST);
+    }
+
+    public static ServiceException walletNotFound() {
+        return new ServiceException(ERROR_WALLET_NOT_FOUND, HttpStatus.NOT_FOUND);
+    }
+
+    public static ServiceException notEnoughBalance() {
+        return new ServiceException(ERROR_NOT_ENOUGH_BALANCE, HttpStatus.NOT_ACCEPTABLE);
     }
 }

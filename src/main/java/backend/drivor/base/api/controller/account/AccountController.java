@@ -1,5 +1,6 @@
 package backend.drivor.base.api.controller.account;
 
+import backend.drivor.base.api.controller.BaseController;
 import backend.drivor.base.domain.document.Account;
 import backend.drivor.base.domain.document.RefreshToken;
 import backend.drivor.base.domain.request.ChangePasswordRequest;
@@ -24,7 +25,7 @@ import java.security.Principal;
 
 @RequestMapping("/account")
 @RestController
-public class AccountController {
+public class AccountController extends BaseController {
 
     @Autowired
     private AccountService accountService;
@@ -32,10 +33,7 @@ public class AccountController {
     @PostMapping("/changePassword")
     public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePasswordRequest request) {
 
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        Account account = accountService.findAccountByUsername(username);
-
+        Account account = getLoggedAccount();
         accountService.changePassword(account, request);
 
         return ResponseEntity.ok(new ApiResponse(HttpStatus.OK.name() ,"Change password successfully!", null));
