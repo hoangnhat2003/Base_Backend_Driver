@@ -1,33 +1,21 @@
-package backend.drivor.base.domain.document;
-import backend.drivor.base.domain.model.BookingLocation;
-import backend.drivor.base.domain.model.VehicleInfo;
-import lombok.Data;
+package backend.drivor.base.service.searchbooking.model;
 
-import javax.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.Date;
 
 @Data
-@Table(name = "booking_history")
-@Entity
-public class BookingHistory {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@NoArgsConstructor
+@AllArgsConstructor
+public class BookingSearchModel {
     private Long id;
-
     private String requestId;
     private Long requester_account_id;
 
-    @Transient
-    private VehicleInfo vehicle;
     private long requested_at;
 
-    @Transient
-    private BookingLocation from;
-
-    @Transient
-    private BookingLocation to;
-    private String passengerName;
     private Double distance;
     private String distance_unit;
     private Integer hours;
@@ -46,7 +34,6 @@ public class BookingHistory {
     private long arrived_at;
     private long started_at;
     private long finished_at;
-
     private Long canceled_by;
     private String canceled_comment;
 

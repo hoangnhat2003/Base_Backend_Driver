@@ -25,6 +25,8 @@ public class BookingIndex {
 
     @Field(name = "requestId", type = FieldType.Text)
     private String requestId;
+    @Field(name = "passengerName", type = FieldType.Text)
+    private String passengerName;
 
     @Field(name = "requesterAccountId", type = FieldType.Long)
     private Long requester_account_id;

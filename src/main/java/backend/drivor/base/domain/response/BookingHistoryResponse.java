@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Data
 public class BookingHistoryResponse {
-
+    private Long id;
     private String requestId;
     private Long requester_account_id;
 
@@ -24,7 +24,6 @@ public class BookingHistoryResponse {
     private Integer hours;
     private long amount; // satoshi
     private long waiting_fee;
-    private String price_currency;
     private String pay_type; // cash/wallet,...
     private String waiting_pay_type;
     private String status;
@@ -38,8 +37,6 @@ public class BookingHistoryResponse {
     private long arrived_at;
     private long started_at;
     private long finished_at;
-    private boolean requester_rated;
-    private boolean driver_rated;
     private Long canceled_by;
     private String canceled_comment;
 

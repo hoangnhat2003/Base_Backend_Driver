@@ -37,6 +37,7 @@ public class BookingIndexManager implements InitIndexEvent {
                 .id(bookingHistory.getId())
                 .accepted_at(bookingHistory.getAccepted_at())
                 .amount(bookingHistory.getAmount())
+                .passengerName(bookingHistory.getPassengerName())
                 .arrived_at(bookingHistory.getArrived_at())
                 .billing_status(bookingHistory.getBilling_status())
                 .canceled_at(bookingHistory.getCanceled_at())
