@@ -1,9 +1,12 @@
 package backend.drivor.base.service.impl;
 
 import backend.drivor.base.domain.components.BillingConfigurations;
+import backend.drivor.base.domain.components.RabbitMQInitial;
+import backend.drivor.base.domain.components.RabbitMQSender;
 import backend.drivor.base.domain.components.RedisCache;
 import backend.drivor.base.domain.constant.*;
 import backend.drivor.base.domain.document.*;
+import backend.drivor.base.domain.model.MqMessage;
 import backend.drivor.base.domain.model.VehicleInfo;
 import backend.drivor.base.domain.repository.BookingHistoryRepository;
 import backend.drivor.base.domain.repository.VehicleRepository;
@@ -17,15 +20,19 @@ import backend.drivor.base.service.inf.AccountService;
 import backend.drivor.base.service.inf.AccountWalletService;
 import backend.drivor.base.service.inf.BookingService;
 import org.modelmapper.ModelMapper;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.GeoUnit;
 
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 @Service
 public class BookingServiceImpl extends ServiceBase implements BookingService {
 
+    @Autowired
+    private RabbitMQSender messageSender;
 
     @Override
     public BookingHistoryResponse newBookingRequest(Account account, NewBookingRequest request) {
@@ -110,8 +117,14 @@ public class BookingServiceImpl extends ServiceBase implements BookingService {
             bookingHistory.setStatus(BookingHistoryStatus.CREATED);
             bookingHistory.setBilling_status(BillingStatus.IN_PROCESS);
             bookingHistory.setNote(request.getNote());
+            bookingHistory.setCreateDate(new Date());
             bookingHistory = bookingHistoryRepository.save(bookingHistory);
             redisCache.setWithExpire(RedisConstant.PREFIX_BOOKING_REQUEST + ":" + bookingHistory.getRequestId(), "", (int) TimeUnit.MINUTES.toSeconds(30));
+
+//            Send message to RabbitMQ
+            MqMessage message = new MqMessage(RabbitMQInitial.EXCHANGE_BOOKING, RabbitMQInitial.ROUTING_KEY_BOOKING + "_INIT_INDEX", bookingHistory);
+            this.messageSender.send(message);
+
         } catch (Exception e) {
             if (accountWallet != null)
                 accountWalletService.unlockBalance(accountWallet, amount);

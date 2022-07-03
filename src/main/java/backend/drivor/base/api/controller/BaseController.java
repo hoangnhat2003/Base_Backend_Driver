@@ -1,6 +1,5 @@
 package backend.drivor.base.api.controller;
 
-
 import backend.drivor.base.domain.document.Account;
 import backend.drivor.base.service.inf.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
