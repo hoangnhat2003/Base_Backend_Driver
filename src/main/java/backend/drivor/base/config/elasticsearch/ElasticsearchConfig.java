@@ -23,6 +23,13 @@ public class ElasticsearchConfig extends AbstractElasticsearchConfiguration {
     @Value("${elasticsearch.password}")
     private String password;
 
+    @Value("${elasticsearch.index}")
+    private String index;
+
+    public String getIndex() {
+        return index;
+    }
+
     @Override
     public @NonNull RestHighLevelClient elasticsearchClient() {
         ClientConfiguration clientConfiguration = ClientConfiguration.builder()

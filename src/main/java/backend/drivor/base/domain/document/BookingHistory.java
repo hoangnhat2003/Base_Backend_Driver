@@ -32,7 +32,6 @@ public class BookingHistory {
     private Integer hours;
     private long amount; // satoshi
     private long waiting_fee;
-    private String price_currency;
     private String pay_type; // cash/wallet,...
     private String waiting_pay_type;
     private String status;
