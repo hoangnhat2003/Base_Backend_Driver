@@ -13,7 +13,9 @@ import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
 import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
+import org.springframework.stereotype.Component;
 
+@Component
 public class BookingIndexManager implements InitIndexEvent {
 
     private static final String TAG = BookingIndexManager.class.getSimpleName();

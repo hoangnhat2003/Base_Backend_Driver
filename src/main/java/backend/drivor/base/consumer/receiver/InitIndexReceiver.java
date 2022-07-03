@@ -24,12 +24,10 @@ public class InitIndexReceiver {
     @RabbitHandler
     public void createGoodsIndex(BookingHistory bookingHistory) {
 
-        if (event != null) {
-           try{
-               event.createBookingIndex(bookingHistory);
-           }catch (Exception e) {
-               LoggerUtil.exception(TAG, e);
-           }
+        try {
+            event.createBookingIndex(bookingHistory);
+        } catch (Exception e) {
+            LoggerUtil.exception(TAG, e);
         }
 
     }
