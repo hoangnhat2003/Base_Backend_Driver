@@ -23,7 +23,7 @@ public class InitIndexReceiver {
     private InitIndexEvent event;
 
     @RabbitHandler
-    public void createGoodsIndex(BookingHistory bookingHistory) {
+    public void createBookingIndex(BookingHistory bookingHistory) {
 
         try {
             LoggerUtil.i(TAG, "Booking from queue : " + GsonSingleton.getInstance().toJson(bookingHistory));

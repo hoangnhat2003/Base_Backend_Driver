@@ -31,7 +31,7 @@ public class BookingIndexManager implements InitIndexEvent {
     @Override
     public void createBookingIndex(BookingHistory bookingHistory) {
 
-        LoggerUtil.i(TAG,"Booking from queue : " + GsonSingleton.getInstance().toJson(bookingHistory));
+        LoggerUtil.i(TAG,"Booking data from queue : " + GsonSingleton.getInstance().toJson(bookingHistory));
 
         BookingIndex bookingIndex = BookingIndex.builder()
                 .id(bookingHistory.getId())
