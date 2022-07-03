@@ -53,6 +53,6 @@ public class BookingHistory {
     private boolean billing_updated;
     private String billing_status;
     private String billing_transaction_id;
-    private Date createDate;
+    private Long createDate;
     private String note;
 }

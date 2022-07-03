@@ -117,7 +117,7 @@ public class BookingServiceImpl extends ServiceBase implements BookingService {
             bookingHistory.setStatus(BookingHistoryStatus.CREATED);
             bookingHistory.setBilling_status(BillingStatus.IN_PROCESS);
             bookingHistory.setNote(request.getNote());
-            bookingHistory.setCreateDate(new Date());
+            bookingHistory.setCreateDate(new Date().getTime());
             bookingHistory = bookingHistoryRepository.save(bookingHistory);
             redisCache.setWithExpire(RedisConstant.PREFIX_BOOKING_REQUEST + ":" + bookingHistory.getRequestId(), "", (int) TimeUnit.MINUTES.toSeconds(30));
 

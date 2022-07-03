@@ -52,7 +52,7 @@ public class BookingIndex {
     @Field(name = "waitingFeeStatus", type = FieldType.Text)
     private String waiting_fee_status;
     @Field(name = "totalAmount", type = FieldType.Long)
-    private long total_amount;
+    private long totalAmount;
     @Field(name = "driverAmount", type = FieldType.Long)
     private long driver_amount;
     @Field(name = "driverAccountId", type = FieldType.Long)
@@ -74,9 +74,9 @@ public class BookingIndex {
     @Field(name = "canceledComment", type = FieldType.Text)
     private String canceled_comment;
     @Field(name = "billingStatus", type = FieldType.Text)
-    private String billing_status;
-    @Field(name = "createDate", type = FieldType.Date)
-    private Date createDate;
+    private String billingStatus;
+    @Field(name = "createDate", type = FieldType.Long)
+    private Long createDate;
     @Field(name = "note", type = FieldType.Text)
     private String note;
 }

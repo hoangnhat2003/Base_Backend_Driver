@@ -16,8 +16,8 @@ public class BookingSearchResponse {
 
     private List<BookingSearchModel> data;
 
-    private Long totalElements;
+    private int totalElements;
 
-    private Long totalPages;
+    private int totalPages;
 
 }
