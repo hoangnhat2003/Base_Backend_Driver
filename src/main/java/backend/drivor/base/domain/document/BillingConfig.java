@@ -20,6 +20,6 @@ public class BillingConfig {
     private Integer seats;
     private long price_per_km;
     private long price_per_m;
-    private long extend_price;
+    private Long extend_price;
     private long price_per_hour;
 }

@@ -6,5 +6,9 @@ public class CastTypeUtils {
            return Long.parseLong(s);
     }
 
+    public static Long toLong(Double d) {
+        Long l = (new Double(d)).longValue();
+        return l;
+    }
 
 }

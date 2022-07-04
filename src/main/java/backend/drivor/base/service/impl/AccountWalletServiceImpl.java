@@ -23,8 +23,9 @@ public class AccountWalletServiceImpl extends ServiceBase implements AccountWall
 
          if(accountWallet == null) {
              accountWallet = createAccountWallet(account, walletType);
+             return accountWallet;
          }
-        return null;
+        return new AccountWallet();
     }
 
     @Override
@@ -55,8 +56,8 @@ public class AccountWalletServiceImpl extends ServiceBase implements AccountWall
 
     private AccountWallet createAccountWallet(Account account, String walletType) {
 
-        AccountWallet accountWallet = null;
         try {
+            AccountWallet accountWallet = new AccountWallet();
             accountWallet.setAccount(account);
             accountWallet.setBalance(0);
             accountWallet.setWalletType(walletType);

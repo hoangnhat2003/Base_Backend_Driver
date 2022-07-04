@@ -46,7 +46,7 @@ services:
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
 
   rabbitmq:
-    image: rabbitmq:3
+    image: rabbitmq
     restart: always
     container_name: rabbitmq
     hostname: rabbitmq
@@ -55,7 +55,8 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
-
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
 volumes:
   booking-redis:
     driver: local

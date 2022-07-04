@@ -6,7 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 public interface BillingConfigRepository extends CrudRepository<BillingConfig, Long> {
-    BillingConfig findByVehicleType(VehicleType type);
 
     BillingConfig findByVehicleTypeAndSeats(VehicleType type, Integer seats);
+
+    BillingConfig findByVehicleType(VehicleType type);
 }

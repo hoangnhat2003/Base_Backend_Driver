@@ -13,6 +13,7 @@ import backend.drivor.base.domain.repository.VehicleRepository;
 import backend.drivor.base.domain.request.NewBookingRequest;
 import backend.drivor.base.domain.response.BookingHistoryResponse;
 import backend.drivor.base.domain.utils.BigNumberCalculator;
+import backend.drivor.base.domain.utils.CastTypeUtils;
 import backend.drivor.base.domain.utils.ServiceExceptionUtils;
 import backend.drivor.base.domain.utils.StringUtils;
 import backend.drivor.base.service.ServiceBase;
@@ -81,13 +82,13 @@ public class BookingServiceImpl extends ServiceBase implements BookingService {
             amount = BigNumberCalculator.multiply(billingConfig.getPrice_per_hour(), hours);
         }else {
 
-            long distance = Long.valueOf(request.getDistance().toString());
+            long distance = CastTypeUtils.toLong(request.getDistance());
             String distanceUnit = request.getDistance_unit();
 
             if (GeoUnit.KM.name().toLowerCase().equals(distanceUnit.toLowerCase()))
                 amount = BigNumberCalculator.multiply(billingConfig.getPrice_per_km(), distance);
             else if (GeoUnit.M.name().toLowerCase().equals(distanceUnit.toLowerCase()))
-                amount = BigNumberCalculator.multiply(billingConfig.getPrice_per_m(), distance);
+                amount =  BigNumberCalculator.multiply(billingConfig.getPrice_per_m(), distance);
         }
 
         String payType = StringUtils.hasText(request.getPay_type()) ? request.getPay_type() : BookingPayType.CASH;

@@ -25,7 +25,7 @@ public class RabbitMQConfig {
     /**
      * Source: https://www.springcloud.io/post/2022-03/messaging-using-rabbitmq-in-spring-boot-application/#gsc.tab=0
      */
-
+    @Value("${rabbitmq.username}")
     private String username;
     @Value("${rabbitmq.password}")
     private String password;
@@ -37,11 +37,12 @@ public class RabbitMQConfig {
     private Integer concurrentConsumers;
     @Value("${rabbitmq.max.concurrent.consumers}")
     private Integer maxConcurrentConsumers;
+    @Value("${rabbitmq.virtualhost}")
+    private String virtualHost;
 
     @Bean
-    public MessageConverter jsonMessageConverter() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        return new Jackson2JsonMessageConverter(objectMapper);
+    public MessageConverter messageConverter() {
+        return  new Jackson2JsonMessageConverter();
     }
 
     @Bean
@@ -52,49 +53,16 @@ public class RabbitMQConfig {
         connectionFactory.setPassword(password);
         return connectionFactory;
     }
-
     @Bean
     public AmqpTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
         final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-        rabbitTemplate.setMessageConverter(jsonMessageConverter());
+        rabbitTemplate.setMessageConverter(messageConverter());
         rabbitTemplate.setReplyTimeout(replyTimeout);
         rabbitTemplate.setUseDirectReplyToContainer(false);
         return rabbitTemplate;
     }
-
     @Bean
     public AmqpAdmin amqpAdmin() {
         return new RabbitAdmin(connectionFactory());
-    }
-
-    @Bean
-    public ErrorHandler errorHandler() {
-        return new ConditionalRejectingErrorHandler(new MyFatalExceptionStrategy());
-    }
-
-    @Bean
-    public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory() {
-        final SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
-        factory.setConnectionFactory(connectionFactory());
-        factory.setMessageConverter(jsonMessageConverter());
-        factory.setConcurrentConsumers(concurrentConsumers);
-        factory.setMaxConcurrentConsumers(maxConcurrentConsumers);
-        factory.setErrorHandler(errorHandler());
-        return factory;
-    }
-
-    public static class MyFatalExceptionStrategy extends ConditionalRejectingErrorHandler.DefaultExceptionStrategy {
-        private final Logger logger = LogManager.getLogger(getClass());
-
-        @Override
-        public boolean isFatal(Throwable t) {
-            if (t instanceof ListenerExecutionFailedException) {
-                ListenerExecutionFailedException lefe = (ListenerExecutionFailedException) t;
-                logger.error("Failed to process inbound message from queue "
-                        + lefe.getFailedMessage().getMessageProperties().getConsumerQueue()
-                        + "; failed message: " + lefe.getFailedMessage(), t);
-            }
-            return super.isFatal(t);
-        }
     }
 }
