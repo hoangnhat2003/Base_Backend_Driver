@@ -34,6 +34,9 @@ public class BookingServiceImpl extends ServiceBase implements BookingService {
     @Autowired
     private RabbitMQSender messageSender;
 
+    @Autowired
+    private ModelMapper mapper;
+
     @Override
     public BookingHistoryResponse newBookingRequest(Account account, NewBookingRequest request) {
 

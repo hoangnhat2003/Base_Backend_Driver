@@ -36,9 +36,6 @@ public abstract class ServiceBase {
     protected BillingConfigurations billingConfigurations;
 
     @Autowired
-    protected ModelMapper mapper;
-
-    @Autowired
     protected AccountWalletRepository accountWalletRepository;
 
     @Autowired
