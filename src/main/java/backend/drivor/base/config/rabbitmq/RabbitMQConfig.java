@@ -82,6 +82,7 @@ public class RabbitMQConfig {
         factory.setErrorHandler(errorHandler());
         return factory;
     }
+
     @Bean
     public ErrorHandler errorHandler() {
         return new ConditionalRejectingErrorHandler(new MyFatalExceptionStrategy());
