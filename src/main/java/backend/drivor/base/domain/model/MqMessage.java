@@ -11,6 +11,8 @@ public class MqMessage {
 
     private String exchange;
 
+    private String queue;
+
     private String routingKey;
 
     private Object message;

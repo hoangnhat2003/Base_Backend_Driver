@@ -1,15 +1,11 @@
 package backend.drivor.base.service.impl;
 
-import backend.drivor.base.domain.components.BillingConfigurations;
-import backend.drivor.base.domain.components.RabbitMQInitial;
+import backend.drivor.base.config.rabbitmq.RabbitMQConfig;
 import backend.drivor.base.domain.components.RabbitMQSender;
-import backend.drivor.base.domain.components.RedisCache;
 import backend.drivor.base.domain.constant.*;
 import backend.drivor.base.domain.document.*;
 import backend.drivor.base.domain.model.MqMessage;
 import backend.drivor.base.domain.model.VehicleInfo;
-import backend.drivor.base.domain.repository.BookingHistoryRepository;
-import backend.drivor.base.domain.repository.VehicleRepository;
 import backend.drivor.base.domain.request.NewBookingRequest;
 import backend.drivor.base.domain.response.BookingHistoryResponse;
 import backend.drivor.base.domain.utils.BigNumberCalculator;
@@ -17,11 +13,8 @@ import backend.drivor.base.domain.utils.CastTypeUtils;
 import backend.drivor.base.domain.utils.ServiceExceptionUtils;
 import backend.drivor.base.domain.utils.StringUtils;
 import backend.drivor.base.service.ServiceBase;
-import backend.drivor.base.service.inf.AccountService;
-import backend.drivor.base.service.inf.AccountWalletService;
 import backend.drivor.base.service.inf.BookingService;
 import org.modelmapper.ModelMapper;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.GeoUnit;
@@ -126,7 +119,7 @@ public class BookingServiceImpl extends ServiceBase implements BookingService {
             redisCache.setWithExpire(RedisConstant.PREFIX_BOOKING_REQUEST + ":" + bookingHistory.getRequestId(), "", (int) TimeUnit.MINUTES.toSeconds(30));
 
 //            Send message to RabbitMQ
-            MqMessage message = new MqMessage(RabbitMQInitial.EXCHANGE_BOOKING, RabbitMQInitial.ROUTING_KEY_BOOKING + "_INIT_INDEX", bookingHistory);
+            MqMessage message = new MqMessage(RabbitMQConfig.EXCHANGE_BOOKING, RabbitMQConfig.QUEUE_BOOKING + "_INIT_INDEX" ,RabbitMQConfig.ROUTING_KEY_BOOKING + "_INIT_INDEX", bookingHistory);
             this.messageSender.send(message);
 
         } catch (Exception e) {

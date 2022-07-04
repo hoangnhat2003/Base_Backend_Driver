@@ -1,19 +1,18 @@
 package backend.drivor.base.consumer.receiver;
 
+import backend.drivor.base.config.rabbitmq.RabbitMQConfig;
 import backend.drivor.base.consumer.event.InitIndexEvent;
-import backend.drivor.base.domain.components.RabbitMQInitial;
 import backend.drivor.base.domain.document.BookingHistory;
 import backend.drivor.base.domain.utils.GsonSingleton;
 import backend.drivor.base.domain.utils.LoggerUtil;
-import backend.drivor.base.service.searchbooking.service.BookingIndexManager;
 import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.rabbit.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @RabbitListener(bindings = @QueueBinding(
-        value = @Queue(value = RabbitMQInitial.QUEUE_BOOKING + "_INIT_INDEX"),
-        exchange = @Exchange(value = RabbitMQInitial.EXCHANGE_BOOKING, type = ExchangeTypes.DIRECT),
-        key = RabbitMQInitial.ROUTING_KEY_BOOKING + "_INIT_INDEX"
+        value = @Queue(value = RabbitMQConfig.QUEUE_BOOKING + "_INIT_INDEX"),
+        exchange = @Exchange(value = RabbitMQConfig.EXCHANGE_BOOKING, type = ExchangeTypes.DIRECT),
+        key = RabbitMQConfig.ROUTING_KEY_BOOKING + "_INIT_INDEX"
 ))
 public class InitIndexReceiver {
 
