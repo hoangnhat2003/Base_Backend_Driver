@@ -30,7 +30,7 @@ Access Database Local: (Cài đặt DBeaver hoặc tạo connection mới trong 
 Reference document:
    
    - RabbitMQ: https://www.springcloud.io/post/2022-03/messaging-using-rabbitmq-in-spring-boot-application/#gsc.tab=0
-               https://gpcoder.com/6925-su-dung-direct-exchange-trong-rabbitmq/
+               / https://gpcoder.com/6925-su-dung-direct-exchange-trong-rabbitmq/
      (Để truy cập vào RabbitMQ Web Admin, type command: `docker exec [CONTAINER_NAME] rabbitmq-plugins enable rabbitmq_management`, sau đó vào host: `http://localhost:15672`
        Default account : Username: guest/Password: guest
      )
