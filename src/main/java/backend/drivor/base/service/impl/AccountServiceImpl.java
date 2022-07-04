@@ -4,6 +4,7 @@ import backend.drivor.base.domain.document.Account;
 import backend.drivor.base.domain.repository.AccountRepository;
 import backend.drivor.base.domain.request.ChangePasswordRequest;
 import backend.drivor.base.domain.components.RedisCache;
+import backend.drivor.base.domain.utils.CastTypeUtils;
 import backend.drivor.base.domain.utils.ServiceExceptionUtils;
 import backend.drivor.base.service.ServiceBase;
 import backend.drivor.base.service.inf.AccountService;
@@ -33,7 +34,7 @@ public class AccountServiceImpl extends ServiceBase implements AccountService {
         boolean isSamePassword = Objects.equals(request.getCurrent_password().trim().toLowerCase(), request.getNew_password().trim().toLowerCase());
 
         if(redisCache.hasKey(key)) {
-            currentCount = Long.parseLong(redisCache.get(key).toString());
+            currentCount = CastTypeUtils.toLong(redisCache.get(key).toString());
         }
 
         if(currentCount != null && currentCount > 5) {

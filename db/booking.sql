@@ -19,7 +19,7 @@ CREATE TABLE vehicle (
 id INT(6) AUTO_INCREMENT PRIMARY KEY,
 account_id INT NOT NULL,
 make VARCHAR(30) NOT NULL,
-seats INT NOT NULL,
+seats INT,
 type ENUM ('BIKE', 'CAR')
 );
 
