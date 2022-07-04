@@ -16,6 +16,5 @@ public class BookingLocation {
     private Double latitude;
     @NotNull
     private Double longitude;
-    private String display_name;
     private String address;
 }
