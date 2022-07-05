@@ -13,7 +13,7 @@ Tech stack:
      - Docker
      - CI/CD: Circle CI, Heruko
      - Database: MySQL
-     - Send message: Smack Client
+     - Send message: Smack Client, WebSocket
      - Send SMS: Twilio
      - AWS: S3, RDS
      - Monitoring: Grafana & Prometheus 
@@ -45,3 +45,4 @@ Reference document:
    - CI/CD with Circle CI: https://chatbotsmagazine.com/create-a-ci-cd-pipeline-with-circleci-to-deploy-your-bot-in-a-docker-image-to-heroku-32f5dfe887
    - Exception Handling in Spring boot App: https://viblo.asia/p/spring-boot-15-exception-handling-exceptionhandler-restcontrolleradvice-controlleradvice-responsestatus-maGK7k2eKj2
    - Elasticsearch, Logstash, Kibana: https://www.youtube.com/watch?v=uSYExRWbC9Y  (Xây dựng hệ thống log tập trung)
+   
