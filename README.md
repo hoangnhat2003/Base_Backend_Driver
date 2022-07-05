@@ -45,4 +45,5 @@ Reference document:
    - CI/CD with Circle CI: [Implement CI/CD with Circle CI and Heroku](https://chatbotsmagazine.com/create-a-ci-cd-pipeline-with-circleci-to-deploy-your-bot-in-a-docker-image-to-heroku-32f5dfe887)
    - Exception Handling in Spring boot App: [Handle exception in Spring boot](https://viblo.asia/p/spring-boot-15-exception-handling-exceptionhandler-restcontrolleradvice-controlleradvice-responsestatus-maGK7k2eKj2)
    - Elasticsearch, Logstash, Kibana: [Example of ELK stack. Build a Log Management System](https://www.youtube.com/watch?v=uSYExRWbC9Y)
-   - Smack Client, WebSocket: [Source code example of Smack Client and WebSocket](https://github.com/smartinrub/spring-xmpp-websocket-reactjs)
+   - Smack Client, WebSocket: [Source code example of Smack Client and WebSocket](https://github.com/smartinrub/spring-xmpp-websocket-reactjs) || [Build Your Own Web Chat Application With Xmpp](https://sergiomartinrubio.com/projects/build-your-own-web-chat-application-with-xmpp/)
+   - WebSocket: [Using WebSocket to build an interactive web application](https://spring.io/guides/gs/messaging-stomp-websocket/)
