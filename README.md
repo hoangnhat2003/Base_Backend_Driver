@@ -45,3 +45,4 @@ Reference document:
    - CI/CD with Circle CI: https://chatbotsmagazine.com/create-a-ci-cd-pipeline-with-circleci-to-deploy-your-bot-in-a-docker-image-to-heroku-32f5dfe887
    - Exception Handling in Spring boot App: https://viblo.asia/p/spring-boot-15-exception-handling-exceptionhandler-restcontrolleradvice-controlleradvice-responsestatus-maGK7k2eKj2
    - Elasticsearch, Logstash, Kibana: https://www.youtube.com/watch?v=uSYExRWbC9Y  (Xây dựng hệ thống log tập trung)
+   - Smack Client, WebSocket: [Source code example](https://github.com/smartinrub/spring-xmpp-websocket-reactjs)
