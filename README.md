@@ -27,6 +27,12 @@ Access Database Local: (Cài đặt DBeaver hoặc tạo connection mới trong 
    - Username: root
    - Password: hoangnhat
 
+
+Flow Chat Function:
+
+[Flow Chat Function](FlowChat.png)
+
+
 Reference document:
 
    - RabbitMQ:  [Config RabbitMQ and and start with basic example](https://www.springcloud.io/post/2022-03/messaging-using-rabbitmq-in-spring-boot-application/#gsc.tab=0) ||
