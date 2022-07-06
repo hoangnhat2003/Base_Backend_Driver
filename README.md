@@ -30,7 +30,7 @@ Access Database Local: (Cài đặt DBeaver hoặc tạo connection mới trong 
 
 Flow Chat Function:
 
-[Flow Chat Function](FlowChat.png)
+![](FlowChat.png)
 
 
 Reference document:
