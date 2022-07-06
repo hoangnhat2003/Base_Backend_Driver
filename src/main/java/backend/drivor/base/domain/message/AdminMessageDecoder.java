@@ -1,7 +1,6 @@
 package backend.drivor.base.domain.message;
 
-import com.google.gson.Gson;
-
+import backend.drivor.base.domain.utils.GsonSingleton;
 import javax.websocket.Decoder;
 import javax.websocket.EndpointConfig;
 
@@ -9,8 +8,8 @@ public class AdminMessageDecoder implements Decoder.Text<AdminMessage> {
 
     @Override
     public AdminMessage decode(String message) {
-        Gson gson = new Gson();
-        return gson.fromJson(message, AdminMessage.class);
+
+        return GsonSingleton.getInstance().fromJson(message, AdminMessage.class);
     }
 
     @Override
