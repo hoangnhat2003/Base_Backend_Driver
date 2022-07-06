@@ -28,7 +28,7 @@ Access Database Local: (Cài đặt DBeaver hoặc tạo connection mới trong 
    - Password: hoangnhat
 
 
-Flow Chat Function:
+Flow Send Message Function:
 
 ![](FlowChat.png)
 
