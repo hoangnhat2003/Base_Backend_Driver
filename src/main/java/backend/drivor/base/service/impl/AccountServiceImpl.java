@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -119,6 +120,29 @@ public class AccountServiceImpl extends ServiceBase implements AccountService {
         ChatAccountResponse response = ChatAccountResponse.builder()
                 .id(chatAccount.getId())
                 .accountId(account.getId())
+                .chat_password(chatAccount.getUsername())
+                .chat_username(chatAccount.getUsername())
+                .build();
+
+        return response;
+    }
+
+    @Override
+    public ChatAccountResponse getChatAccountInfo(Optional<String> username) {
+
+        if(!username.isPresent()) {
+            throw ServiceExceptionUtils.missingParam("username");
+        }
+
+        ChatAccount chatAccount = chatAccountRepository.findByUsername(username.get());
+
+        if(chatAccount == null) {
+            throw ServiceExceptionUtils.accountNotFound();
+        }
+
+        ChatAccountResponse response = ChatAccountResponse.builder()
+                .id(chatAccount.getId())
+                .accountId(chatAccount.getAccount().getId())
                 .chat_password(chatAccount.getUsername())
                 .chat_username(chatAccount.getUsername())
                 .build();

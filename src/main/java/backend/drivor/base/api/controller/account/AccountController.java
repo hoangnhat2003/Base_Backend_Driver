@@ -17,13 +17,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Optional;
 
 @RequestMapping("/account")
 @RestController
@@ -48,6 +46,13 @@ public class AccountController extends BaseController {
 
         ChatAccountResponse response = accountService.createChatAccount(account, request);
         return ResponseEntity.ok(new ApiResponse(HttpStatus.OK.name() ,"Create chat account successfully!", response));
+    }
+
+    @GetMapping("/chat_account")
+    public ResponseEntity<?> getChatAccount(@RequestParam(name = "username") Optional<String> username) {
+
+        ChatAccountResponse response = accountService.getChatAccountInfo(username);
+        return ResponseEntity.ok(new ApiResponse(HttpStatus.OK.name() ,null, response));
     }
 
 }

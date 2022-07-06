@@ -6,6 +6,8 @@ import backend.drivor.base.domain.request.ChatAccountRequest;
 import backend.drivor.base.domain.response.ApiResponse;
 import backend.drivor.base.domain.response.ChatAccountResponse;
 
+import java.util.Optional;
+
 public interface AccountService{
 
      void changePassword(Account account, ChangePasswordRequest request);
@@ -13,4 +15,6 @@ public interface AccountService{
      Account findAccountByUsername(String username);
 
     ChatAccountResponse createChatAccount(Account account, ChatAccountRequest request);
+
+    ChatAccountResponse getChatAccountInfo(Optional<String> username);
 }
