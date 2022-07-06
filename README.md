@@ -13,7 +13,7 @@ Tech stack:
      - Docker
      - CI/CD: Circle CI, Heruko
      - Database: MySQL
-     - Send message: Smack Client, WebSocket
+     - Send message: XMPP Server, Smack Client, WebSocket
      - Send SMS: Twilio
      - AWS: S3, RDS
      - Monitoring: Grafana & Prometheus 
