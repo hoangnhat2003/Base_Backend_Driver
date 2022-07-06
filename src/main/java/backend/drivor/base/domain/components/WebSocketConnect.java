@@ -36,7 +36,7 @@ public class WebSocketConnect {
     public void connect(String chat_username, String chat_password) throws Exception {
         URI uri;
         try {
-            uri = new URI("ws://localhost:8080/chat/{chat_username}/{chat_password}");
+            uri = new URI(String.format("ws://localhost:8080/chat/%s/%s", chat_username, chat_password));
         } catch (URISyntaxException e) {
             e.printStackTrace();
             return;
