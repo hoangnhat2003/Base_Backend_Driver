@@ -1,10 +1,15 @@
 package backend.drivor.base.service.impl;
 
 import backend.drivor.base.domain.document.Account;
+import backend.drivor.base.domain.document.ChatAccount;
 import backend.drivor.base.domain.repository.AccountRepository;
+import backend.drivor.base.domain.repository.ChatAccountRepository;
 import backend.drivor.base.domain.request.ChangePasswordRequest;
 import backend.drivor.base.domain.components.RedisCache;
+import backend.drivor.base.domain.request.ChatAccountRequest;
+import backend.drivor.base.domain.response.ChatAccountResponse;
 import backend.drivor.base.domain.utils.CastTypeUtils;
+import backend.drivor.base.domain.utils.LoggerUtil;
 import backend.drivor.base.domain.utils.ServiceExceptionUtils;
 import backend.drivor.base.service.ServiceBase;
 import backend.drivor.base.service.inf.AccountService;
@@ -12,11 +17,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @Service
 public class AccountServiceImpl extends ServiceBase implements AccountService {
+
+    private static final String TAG = AccountServiceImpl.class.getSimpleName();
+
+    @Autowired
+    private ChatAccountRepository chatAccountRepository;
 
     /**
      * Rate limit change password.
@@ -77,5 +88,41 @@ public class AccountServiceImpl extends ServiceBase implements AccountService {
             throw ServiceExceptionUtils.accountNotFound();
 
         return account;
+    }
+
+    @Override
+    public ChatAccountResponse createChatAccount(Account account, ChatAccountRequest request) {
+
+        ChatAccount chatAccount = chatAccountRepository.findByUsername(request.getUsername());
+
+        if(chatAccount != null) {
+            throw ServiceExceptionUtils.valueExists("chat_username");
+        }
+
+        try {
+            chatAccount = new ChatAccount();
+            chatAccount.setAccount(account);
+            chatAccount.setUsername(request.getUsername());
+            chatAccount.setPassword(request.getPassword());
+            chatAccount.setCreatedDate(new Date());
+
+            chatAccountRepository.save(chatAccount);
+
+        }catch (NullPointerException e) {
+             LoggerUtil.e(TAG, e.getMessage());
+             throw new RuntimeException(e);
+        }catch (Exception e) {
+            LoggerUtil.e(TAG, e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+        ChatAccountResponse response = ChatAccountResponse.builder()
+                .id(chatAccount.getId())
+                .accountId(account.getId())
+                .chat_password(chatAccount.getUsername())
+                .chat_username(chatAccount.getUsername())
+                .build();
+
+        return response;
     }
 }

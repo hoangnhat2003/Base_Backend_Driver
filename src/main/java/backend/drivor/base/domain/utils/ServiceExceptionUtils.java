@@ -62,8 +62,8 @@ public class ServiceExceptionUtils {
         return new ServiceException(ERROR_ACCOUNT_OWING, HttpStatus.NOT_ACCEPTABLE);
     }
 
-    public static ServiceException valueExists(String request_id) {
-        return new ServiceException(String.format(ERROR_VALUE_EXISTS, request_id), HttpStatus.BAD_REQUEST);
+    public static ServiceException valueExists(String value) {
+        return new ServiceException(String.format(ERROR_VALUE_EXISTS, value), HttpStatus.BAD_REQUEST);
     }
 
     public static ServiceException missingParam(String param) {
