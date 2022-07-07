@@ -10,6 +10,9 @@ import java.util.UUID;
 public class AdminMessage<T> {
 
     private String msgId;
+
+    private String from;
+    private String to;
     private String name;
     private String type;
     private T data;

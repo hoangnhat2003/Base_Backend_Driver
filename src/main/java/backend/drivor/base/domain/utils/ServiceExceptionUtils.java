@@ -33,6 +33,9 @@ public class ServiceExceptionUtils {
 
     private static final String ERROR_NOT_ENOUGH_BALANCE = "Not enough balance";
 
+    private static final String CONNECTION_FAILED = "Failed to connect to XMPP server";
+
+
 
 
     public static TokenRefreshException verifiedRefreshTokenFailed(String token) {
@@ -89,5 +92,9 @@ public class ServiceExceptionUtils {
 
     public static XMPPGenericException connectionError(String username) {
         return new XMPPGenericException(username);
+    }
+
+    public static ServiceException connectionFailed() {
+        return new ServiceException(CONNECTION_FAILED, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
