@@ -1,5 +1,7 @@
 package backend.drivor.base.domain.components;
 
+import backend.drivor.base.config.xmpp.XMPPMessageTransmitter;
+import backend.drivor.base.config.xmpp.XMPPProperties;
 import backend.drivor.base.domain.exception.XMPPGenericException;
 import backend.drivor.base.domain.utils.LoggerUtil;
 import backend.drivor.base.domain.utils.ServiceExceptionUtils;

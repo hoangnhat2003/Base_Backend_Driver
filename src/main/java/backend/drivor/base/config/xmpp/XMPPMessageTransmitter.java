@@ -1,4 +1,4 @@
-package backend.drivor.base.domain.components;
+package backend.drivor.base.config.xmpp;
 
 import backend.drivor.base.domain.message.AdminMessage;
 import backend.drivor.base.domain.utils.GsonSingleton;
@@ -9,7 +9,6 @@ import org.jivesoftware.smack.packet.Message;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.Session;
-import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor

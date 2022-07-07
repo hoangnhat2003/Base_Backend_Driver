@@ -1,4 +1,4 @@
-package backend.drivor.base.domain.components;
+package backend.drivor.base.config.websocket;
 
 import backend.drivor.base.config.websocket.WebsocketClientEndpoint;
 import backend.drivor.base.domain.document.Account;

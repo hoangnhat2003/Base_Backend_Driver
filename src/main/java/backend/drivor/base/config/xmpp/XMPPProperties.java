@@ -1,4 +1,4 @@
-package backend.drivor.base.domain.components;
+package backend.drivor.base.config.xmpp;
 
 import lombok.Getter;
 import lombok.Setter;
