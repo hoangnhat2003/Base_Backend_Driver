@@ -2,6 +2,7 @@ package backend.drivor.base.domain.utils;
 
 import backend.drivor.base.domain.exception.ServiceException;
 import backend.drivor.base.domain.exception.TokenRefreshException;
+import backend.drivor.base.domain.exception.XMPPGenericException;
 import org.springframework.http.HttpStatus;
 
 public class ServiceExceptionUtils {
@@ -84,5 +85,9 @@ public class ServiceExceptionUtils {
 
     public static ServiceException notEnoughBalance() {
         return new ServiceException(ERROR_NOT_ENOUGH_BALANCE, HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    public static XMPPGenericException connectionError(String username) {
+        return new XMPPGenericException(username);
     }
 }

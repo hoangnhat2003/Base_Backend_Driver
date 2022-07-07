@@ -2,6 +2,7 @@ package backend.drivor.base.domain.handler;
 
 import backend.drivor.base.domain.exception.ServiceException;
 import backend.drivor.base.domain.exception.TokenRefreshException;
+import backend.drivor.base.domain.exception.XMPPGenericException;
 import backend.drivor.base.domain.utils.ServiceExceptionUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,16 @@ public class ServiceExceptionHandler {
     @ExceptionHandler({ TokenRefreshException.class })
     protected Object handleRefreshTokenServiceException(HttpServletRequest req, HttpServletResponse res,
                                                  final TokenRefreshException ex) throws IOException {
+        HttpHeaders header = new HttpHeaders();
+        header.setContentType(MediaType.APPLICATION_JSON);
+        HttpStatus httpStatus = HttpStatus.OK;
+        String response = ex.generateStringResponse();
+        return new ResponseEntity<>(response, header, httpStatus);
+    }
+
+    @ExceptionHandler({ XMPPGenericException.class })
+    protected Object handleRefreshTokenServiceException(HttpServletRequest req, HttpServletResponse res,
+                                                        final XMPPGenericException ex) throws IOException {
         HttpHeaders header = new HttpHeaders();
         header.setContentType(MediaType.APPLICATION_JSON);
         HttpStatus httpStatus = HttpStatus.OK;
