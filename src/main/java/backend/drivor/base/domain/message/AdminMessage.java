@@ -1,10 +1,12 @@
 package backend.drivor.base.domain.message;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.UUID;
 
 @Data
+@Builder
 public class AdminMessage<T> {
 
     private String msgId;

@@ -15,8 +15,10 @@ import org.jxmpp.jid.EntityBareJid;
 import org.jxmpp.jid.EntityFullJid;
 import org.jxmpp.jid.impl.JidCreate;
 import org.jxmpp.stringprep.XmppStringprepException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.websocket.Session;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -25,6 +27,9 @@ import java.util.Optional;
 public class SmackClient {
 
     private static final String TAG = SmackClient.class.getSimpleName();
+
+    @Autowired
+    private XMPPMessageTransmitter xmppMessageTransmitter;
 
     private final XMPPProperties xmppProperties;
 
@@ -79,6 +84,19 @@ public class SmackClient {
             throw new XMPPGenericException(connection.getUser().toString());
         }
     }
+
+    public void addIncomingMessageListener(XMPPTCPConnection connection, Session webSocketSession) {
+        ChatManager chatManager = ChatManager.getInstanceFor(connection);
+        chatManager.addIncomingListener((from, message, chat) -> xmppMessageTransmitter
+                .sendResponse(message, webSocketSession));
+        LoggerUtil.i(TAG, String.format("Incoming message listener for user '{}' added.", connection.getUser()));
+    }
+
+    public void disconnect(XMPPTCPConnection connection) {
+        connection.disconnect();
+        LoggerUtil.i(TAG, "Smack Message Client disconnected");
+    }
+
 
 
 }
