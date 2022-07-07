@@ -1,50 +1,35 @@
 package backend.drivor.base.config.websocket;
 
+import backend.drivor.base.domain.message.AdminMessage;
+import backend.drivor.base.domain.message.AdminMessageDecoder;
+import backend.drivor.base.domain.message.AdminMessageEncoder;
+import backend.drivor.base.domain.utils.GsonSingleton;
+import backend.drivor.base.domain.utils.LoggerUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.client.WebSocketClient;
 
 import javax.websocket.*;
 import java.net.URI;
 import java.nio.ByteBuffer;
+import java.text.SimpleDateFormat;
+import java.util.logging.Logger;
 
 
-@ClientEndpoint
-public class WebsocketClientEndpoint   {
+@ClientEndpoint(encoders = AdminMessageEncoder.class, decoders = AdminMessageDecoder.class)
+public class WebsocketClientEndpoint  {
 
-    Session userSession = null;
-    private MessageHandler messageHandler;
-
-    public WebsocketClientEndpoint(URI endpointURI) {
-        try {
-            WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-            container.connectToServer(this, endpointURI);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
+    private static final String TAG = WebsocketClientEndpoint.class.getSimpleName();
 
     /**
      * Callback hook for Connection open events.
      *
-     * @param userSession the userSession which is opened.
+     * @param session the session which is opened.
      */
     @OnOpen
-    public void onOpen(Session userSession) {
-        System.out.println("opening websocket");
-        this.userSession = userSession;
+    public void onOpen(Session session) {
+        LoggerUtil.i(TAG, String.format("Connection established. session id: %s", session.getId()));
     }
 
-    /**
-     * Callback hook for Connection close events.
-     *
-     * @param userSession the userSession which is getting closed.
-     * @param reason the reason for connection close
-     */
-    @OnClose
-    public void onClose(Session userSession, CloseReason reason) {
-        System.out.println("closing websocket");
-        this.userSession = null;
-    }
 
     /**
      * Callback hook for Message Events. This method will be invoked when a client send a message.
@@ -52,43 +37,19 @@ public class WebsocketClientEndpoint   {
      * @param message The text message
      */
     @OnMessage
-    public void onMessage(String message) {
-        if (this.messageHandler != null) {
-            this.messageHandler.handleMessage(message);
-        }
-    }
-
-    @OnMessage
-    public void onMessage(ByteBuffer bytes) {
-        System.out.println("Handle byte buffer");
-    }
-
-
-    /**
-     * register message handler
-     *
-     * @param msgHandler
-     */
-    public void addMessageHandler(MessageHandler msgHandler) {
-        this.messageHandler = msgHandler;
+    public void onMessage(AdminMessage message) {
+         LoggerUtil.i(TAG, String.format("[%s:%s] %s", message.getName(), message.getType(), GsonSingleton.getInstance().toJson( message.getData())));
     }
 
     /**
-     * Send a message.
+     * Callback hook for Connection close events.
      *
-     * @param message
+     * @param session the userSession which is getting closed.
+     * @param reason the reason for connection close
      */
-    public void sendMessage(String message) {
-        this.userSession.getAsyncRemote().sendText(message);
+    @OnClose
+    public void onClose(Session session, CloseReason reason) {
+         LoggerUtil.i(TAG, String.format("Closing session => '{}' - '{}'", session, reason));
     }
 
-    /**
-     * Message handler.
-     *
-     * @author Jiji_Sasidharan
-     */
-    public static interface MessageHandler {
-
-        public void handleMessage(String message);
-    }
 }

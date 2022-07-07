@@ -1,4 +1,4 @@
-package backend.drivor.base.domain.components;
+package backend.drivor.base.config.websocket;
 
 import backend.drivor.base.domain.message.AdminMessage;
 import backend.drivor.base.domain.message.AdminMessageDecoder;

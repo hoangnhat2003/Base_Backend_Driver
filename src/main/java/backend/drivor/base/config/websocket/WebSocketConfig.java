@@ -1,6 +1,5 @@
 package backend.drivor.base.config.websocket;
 
-import backend.drivor.base.domain.components.ChatWebSocket;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
