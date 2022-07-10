@@ -137,12 +137,9 @@ public class BookingServiceImpl extends ServiceBase implements BookingService {
 
         String requestId = request.getRequest_id();
 
-        if (request.getLatitude() == null)
-            throw ServiceExceptionUtils.missingParam("latitude");
-        if (request.getLongitude() == null)
-            throw ServiceExceptionUtils.missingParam("longitude");
+        String dataFromCache = (String) redisCache.get(RedisConstant.PREFIX_BOOKING_REQUEST + ":" + requestId);
 
-        BookingHistory bookingHistory = GsonSingleton.getInstance().fromJson((String) redisCache.get(RedisConstant.PREFIX_BOOKING_REQUEST + ":" + requestId), BookingHistory.class);
+        BookingHistory bookingHistory = GsonSingleton.getInstance().fromJson(dataFromCache, BookingHistory.class);
 
         if (bookingHistory == null)
             throw ServiceExceptionUtils.invalidParam("request_id");

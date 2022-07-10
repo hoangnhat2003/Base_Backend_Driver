@@ -12,6 +12,4 @@ public class DriverArrivedRequest {
     @NotEmpty
     private String request_id;
 
-    private Double latitude;
-    private Double longitude;
 }
