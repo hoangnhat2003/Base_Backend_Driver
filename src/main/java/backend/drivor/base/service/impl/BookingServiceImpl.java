@@ -6,12 +6,11 @@ import backend.drivor.base.domain.constant.*;
 import backend.drivor.base.domain.document.*;
 import backend.drivor.base.domain.model.MqMessage;
 import backend.drivor.base.domain.model.VehicleInfo;
+import backend.drivor.base.domain.request.DriverArrivedRequest;
 import backend.drivor.base.domain.request.NewBookingRequest;
 import backend.drivor.base.domain.response.BookingHistoryResponse;
-import backend.drivor.base.domain.utils.BigNumberCalculator;
-import backend.drivor.base.domain.utils.CastTypeUtils;
-import backend.drivor.base.domain.utils.ServiceExceptionUtils;
-import backend.drivor.base.domain.utils.StringUtils;
+import backend.drivor.base.domain.response.GeneralSubmitResponse;
+import backend.drivor.base.domain.utils.*;
 import backend.drivor.base.service.ServiceBase;
 import backend.drivor.base.service.inf.BookingService;
 import org.modelmapper.ModelMapper;
@@ -116,7 +115,7 @@ public class BookingServiceImpl extends ServiceBase implements BookingService {
             bookingHistory.setNote(request.getNote());
             bookingHistory.setCreateDate(new Date().getTime());
             bookingHistory = bookingHistoryRepository.save(bookingHistory);
-            redisCache.setWithExpire(RedisConstant.PREFIX_BOOKING_REQUEST + ":" + bookingHistory.getRequestId(), "", (int) TimeUnit.MINUTES.toSeconds(30));
+            redisCache.setWithExpire(RedisConstant.PREFIX_BOOKING_REQUEST + ":" + bookingHistory.getRequestId(), GsonSingleton.getInstance().toJson(bookingHistory), (int) TimeUnit.MINUTES.toSeconds(30));
 
 //            Send message to RabbitMQ
             MqMessage message = new MqMessage(RabbitMQConfig.EXCHANGE_BOOKING, RabbitMQConfig.QUEUE_BOOKING + "_INIT_INDEX" ,RabbitMQConfig.ROUTING_KEY_BOOKING + "_INIT_INDEX", bookingHistory);
@@ -131,5 +130,31 @@ public class BookingServiceImpl extends ServiceBase implements BookingService {
         BookingHistoryResponse response = mapper.map(bookingHistory, BookingHistoryResponse.class);
 
         return response;
+    }
+
+    @Override
+    public GeneralSubmitResponse arrivedBookingRequest(Account account, DriverArrivedRequest request) {
+
+        String requestId = request.getRequest_id();
+
+        if (request.getLatitude() == null)
+            throw ServiceExceptionUtils.missingParam("latitude");
+        if (request.getLongitude() == null)
+            throw ServiceExceptionUtils.missingParam("longitude");
+
+        BookingHistory bookingHistory = GsonSingleton.getInstance().fromJson((String) redisCache.get(RedisConstant.PREFIX_BOOKING_REQUEST + ":" + requestId), BookingHistory.class);
+
+        if (bookingHistory == null)
+            throw ServiceExceptionUtils.invalidParam("request_id");
+
+        if (!BookingHistoryStatus.ACCEPTED.equals(bookingHistory.getStatus()))
+            return new GeneralSubmitResponse(false);
+
+        if (!account.getId().equals(bookingHistory.getDriver_account_id()))
+            throw ServiceExceptionUtils.unAuthorize();
+
+       // Send message to RabbitMQ
+
+        return null;
     }
 }

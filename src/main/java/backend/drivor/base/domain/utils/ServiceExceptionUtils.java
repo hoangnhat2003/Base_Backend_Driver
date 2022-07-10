@@ -35,6 +35,7 @@ public class ServiceExceptionUtils {
 
     private static final String CONNECTION_FAILED = "Failed to connect to XMPP server";
 
+    private static final String ERROR_UNAUTHORIZE = "Unauthorize";
 
 
 
@@ -96,5 +97,9 @@ public class ServiceExceptionUtils {
 
     public static ServiceException connectionFailed() {
         return new ServiceException(CONNECTION_FAILED, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    public static ServiceException unAuthorize() {
+        return new ServiceException(ERROR_UNAUTHORIZE, HttpStatus.UNAUTHORIZED);
     }
 }
