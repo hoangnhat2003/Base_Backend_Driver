@@ -9,6 +9,7 @@ Tech stack:
      - Message Queue: RabbitMQ
      - Cache: Redis
      - Search Engine: ElasticSearch
+     - Unit test: JUnit, Mockito
      - Log Management: Elasticsearch, Logstash, Kibana
      - Docker
      - CI/CD: Circle CI, Heruko

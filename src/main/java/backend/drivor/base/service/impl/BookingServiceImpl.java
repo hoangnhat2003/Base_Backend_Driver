@@ -138,7 +138,40 @@ public class BookingServiceImpl extends ServiceBase implements BookingService {
 
     @Override
     public GeneralSubmitResponse acceptBookingRequest(Account account, AcceptBookingRequest request) {
-        return null;
+
+        String requestId = request.getRequest_id();
+        String dataFromCache = (String) redisCache.get(RedisConstant.PREFIX_BOOKING_REQUEST + ":" + requestId);
+        BookingHistory bookingHistory = GsonSingleton.getInstance().fromJson(dataFromCache, BookingHistory.class);
+
+        if (bookingHistory == null)
+            throw ServiceExceptionUtils.invalidParam("request_id");
+
+        if (!AccountStatus.ONLINE.equals(account.getOnline_status()))
+            return new GeneralSubmitResponse(false);
+
+        if (account.getId().equals(bookingHistory.getRequester_account_id()))
+            return new GeneralSubmitResponse(false);
+
+        if (bookingHistory.getDriver_account_id() == null)
+            return new GeneralSubmitResponse(false);
+
+        if (!BookingHistoryStatus.CREATED.equals(bookingHistory.getStatus()))
+            return new GeneralSubmitResponse(false);
+
+        try {
+
+            bookingHistory.setStatus(BookingHistoryStatus.ACCEPTED);
+            bookingHistory.setAccepted_at(System.currentTimeMillis());
+            bookingHistory.setDriver_account_id(account.getId());
+            bookingHistoryRepository.save(bookingHistory);
+
+            redisCache.setWithExpire(RedisConstant.PREFIX_BOOKING_REQUEST + ":" + bookingHistory.getRequestId(), GsonSingleton.getInstance().toJson(bookingHistory), (int) TimeUnit.MINUTES.toSeconds(30));
+
+            return new GeneralSubmitResponse(true);
+        }catch (Exception e) {
+            LoggerUtil.exception(TAG, e);
+            throw ServiceExceptionUtils.handleApplicationException(e.getMessage());
+        }
     }
 
     @Override
@@ -169,6 +202,5 @@ public class BookingServiceImpl extends ServiceBase implements BookingService {
             throw ServiceExceptionUtils.handleApplicationException(e.getMessage());
         }
     }
-
 
 }
