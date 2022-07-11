@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import redis.clients.jedis.GeoUnit;
 
 import java.util.Date;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -75,7 +76,7 @@ public class BookingServiceImpl extends ServiceBase implements BookingService {
         long amount = 0;
         if (bookByHour) {
             amount = BigNumberCalculator.multiply(billingConfig.getPrice_per_hour(), hours);
-        }else {
+        } else {
 
             long distance = CastTypeUtils.toLong(request.getDistance());
             String distanceUnit = request.getDistance_unit();
@@ -83,7 +84,7 @@ public class BookingServiceImpl extends ServiceBase implements BookingService {
             if (GeoUnit.KM.name().toLowerCase().equals(distanceUnit.toLowerCase()))
                 amount = BigNumberCalculator.multiply(billingConfig.getPrice_per_km(), distance);
             else if (GeoUnit.M.name().toLowerCase().equals(distanceUnit.toLowerCase()))
-                amount =  BigNumberCalculator.multiply(billingConfig.getPrice_per_m(), distance);
+                amount = BigNumberCalculator.multiply(billingConfig.getPrice_per_m(), distance);
         }
 
         String payType = StringUtils.hasText(request.getPay_type()) ? request.getPay_type() : BookingPayType.CASH;
@@ -121,7 +122,7 @@ public class BookingServiceImpl extends ServiceBase implements BookingService {
             redisCache.setWithExpire(RedisConstant.PREFIX_BOOKING_REQUEST + ":" + bookingHistory.getRequestId(), GsonSingleton.getInstance().toJson(bookingHistory), (int) TimeUnit.MINUTES.toSeconds(30));
 
 //            Send message to RabbitMQ
-            MqMessage message = new MqMessage(RabbitMQConfig.EXCHANGE_BOOKING, RabbitMQConfig.QUEUE_BOOKING + "_INIT_INDEX" ,RabbitMQConfig.ROUTING_KEY_BOOKING + "_INIT_INDEX", bookingHistory);
+            MqMessage message = new MqMessage(RabbitMQConfig.EXCHANGE_BOOKING, RabbitMQConfig.QUEUE_BOOKING + "_INIT_INDEX", RabbitMQConfig.ROUTING_KEY_BOOKING + "_INIT_INDEX", bookingHistory);
             this.messageSender.send(message);
             LoggerUtil.i(TAG, "Sending Message to the Queue : " + GsonSingleton.getInstance().toJson(message.getMessage()));
 
@@ -140,8 +141,7 @@ public class BookingServiceImpl extends ServiceBase implements BookingService {
     public GeneralSubmitResponse acceptBookingRequest(Account account, AcceptBookingRequest request) {
 
         String requestId = request.getRequest_id();
-        String dataFromCache = (String) redisCache.get(RedisConstant.PREFIX_BOOKING_REQUEST + ":" + requestId);
-        BookingHistory bookingHistory = GsonSingleton.getInstance().fromJson(dataFromCache, BookingHistory.class);
+        BookingHistory bookingHistory = getDateFromCache(requestId);
 
         if (bookingHistory == null)
             throw ServiceExceptionUtils.invalidParam("request_id");
@@ -168,7 +168,7 @@ public class BookingServiceImpl extends ServiceBase implements BookingService {
             redisCache.setWithExpire(RedisConstant.PREFIX_BOOKING_REQUEST + ":" + bookingHistory.getRequestId(), GsonSingleton.getInstance().toJson(bookingHistory), (int) TimeUnit.MINUTES.toSeconds(30));
 
             return new GeneralSubmitResponse(true);
-        }catch (Exception e) {
+        } catch (Exception e) {
             LoggerUtil.exception(TAG, e);
             throw ServiceExceptionUtils.handleApplicationException(e.getMessage());
         }
@@ -179,9 +179,7 @@ public class BookingServiceImpl extends ServiceBase implements BookingService {
 
         String requestId = request.getRequest_id();
 
-        String dataFromCache = (String) redisCache.get(RedisConstant.PREFIX_BOOKING_REQUEST + ":" + requestId);
-
-        BookingHistory bookingHistory = GsonSingleton.getInstance().fromJson(dataFromCache, BookingHistory.class);
+        BookingHistory bookingHistory = getDateFromCache(requestId);
 
         if (bookingHistory == null)
             throw ServiceExceptionUtils.invalidParam("request_id");
@@ -192,15 +190,32 @@ public class BookingServiceImpl extends ServiceBase implements BookingService {
         if (!account.getId().equals(bookingHistory.getDriver_account_id()))
             throw ServiceExceptionUtils.unAuthorize();
 
-       // Send message to RabbitMQ
+        // Send message to RabbitMQ
         try {
-            MqMessage message = new MqMessage(RabbitMQConfig.EXCHANGE_BOOKING, RabbitMQConfig.QUEUE_BOOKING + "_ARRIVED_BOOKING" ,RabbitMQConfig.ROUTING_KEY_BOOKING + "_ARRIVED_BOOKING", bookingHistory);
+            MqMessage message = new MqMessage(RabbitMQConfig.EXCHANGE_BOOKING, RabbitMQConfig.QUEUE_BOOKING + "_ARRIVED_BOOKING", RabbitMQConfig.ROUTING_KEY_BOOKING + "_ARRIVED_BOOKING", bookingHistory);
             this.messageSender.send(message);
             LoggerUtil.i(TAG, "Sending Message to the Queue : " + GsonSingleton.getInstance().toJson(message.getMessage()));
-            return new GeneralSubmitResponse(true);
-        }catch (Exception e) {
+            redisCache.delete(RedisConstant.PREFIX_BOOKING_REQUEST + ":" + requestId);
+        } catch (Exception e) {
             throw ServiceExceptionUtils.handleApplicationException(e.getMessage());
+        } finally {
+            BookingHistory dataFromCache = getDateFromCache(requestId);
+            if(!BookingHistoryStatus.ACCEPTED.equals(dataFromCache.getStatus())) {
+                return new GeneralSubmitResponse(false);
+            }
+            return new GeneralSubmitResponse(true);
         }
     }
 
+    private BookingHistory getDateFromCache(String requestId) {
+        String dataFromCache = (String) redisCache.get(RedisConstant.PREFIX_BOOKING_REQUEST + ":" + requestId);
+
+        BookingHistory bookingHistory = GsonSingleton.getInstance().fromJson(dataFromCache, BookingHistory.class);
+
+        if (bookingHistory != null) {
+            return bookingHistory;
+        }
+
+        return null;
+    }
 }

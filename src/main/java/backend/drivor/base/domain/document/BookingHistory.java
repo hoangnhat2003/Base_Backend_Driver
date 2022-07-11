@@ -2,6 +2,7 @@ package backend.drivor.base.domain.document;
 import backend.drivor.base.domain.model.BookingLocation;
 import backend.drivor.base.domain.model.VehicleInfo;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -9,6 +10,7 @@ import java.util.Date;
 @Data
 @Table(name = "booking_history")
 @Entity
+@NoArgsConstructor
 public class BookingHistory {
 
     @Id

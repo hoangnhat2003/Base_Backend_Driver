@@ -1,6 +1,8 @@
 package backend.drivor.base.service.distribution;
 
 import backend.drivor.base.consumer.event.BookingEvent;
+import backend.drivor.base.domain.constant.BookingHistoryStatus;
+import backend.drivor.base.domain.constant.RedisConstant;
 import backend.drivor.base.domain.document.ChatAccount;
 import backend.drivor.base.domain.utils.GsonSingleton;
 import backend.drivor.base.domain.components.SendMessageAsync;
@@ -16,6 +18,8 @@ import backend.drivor.base.service.ServiceBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class BookingDistribution extends ServiceBase implements BookingEvent {
@@ -65,8 +69,21 @@ public class BookingDistribution extends ServiceBase implements BookingEvent {
     }
 
     @Override
-    public GeneralSubmitResponse arrivedBookingRequest(BookingHistory bookingHistory) {
+    public void arrivedBookingRequest(BookingHistory bookingHistory) {
 
-        return null;
+        Account account = accountService.findAccountById(bookingHistory.getDriver_account_id());
+
+        try {
+            bookingHistory.setStatus(BookingHistoryStatus.ARRIVED);
+            bookingHistory.setArrived_at(System.currentTimeMillis());
+            bookingHistoryRepository.save(bookingHistory);
+
+            redisCache.setWithExpire(RedisConstant.PREFIX_BOOKING_REQUEST + ":" + bookingHistory.getRequestId(), GsonSingleton.getInstance().toJson(bookingHistory), (int) TimeUnit.MINUTES.toSeconds(30));
+
+            sendMessageBookingRequestUpdated(bookingHistory, account);
+        }catch (Exception e) {
+            LoggerUtil.exception(TAG,e);
+            throw ServiceExceptionUtils.handleApplicationException(e.getMessage());
+        }
     }
 }

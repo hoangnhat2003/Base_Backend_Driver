@@ -5,6 +5,6 @@ import backend.drivor.base.domain.response.GeneralSubmitResponse;
 
 public interface BookingEvent {
 
-    GeneralSubmitResponse arrivedBookingRequest(BookingHistory bookingHistory);
+    void arrivedBookingRequest(BookingHistory bookingHistory);
 
 }
