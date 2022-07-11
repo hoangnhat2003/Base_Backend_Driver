@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -29,7 +30,7 @@ public class BookingDistribution extends ServiceBase implements BookingEvent {
     @Autowired
     private SendMessageAsync sendMessageAsync;
 
-    private void sendMessageBookingRequestUpdated(BookingHistory bookingHistory, Account account) {
+    public void sendMessageBookingRequestUpdated(BookingHistory bookingHistory, Account account) {
 
         Account user = bookingHistory.getRequester_account_id() != null
                        ? accountService.findAccountById(bookingHistory.getRequester_account_id())
@@ -85,5 +86,14 @@ public class BookingDistribution extends ServiceBase implements BookingEvent {
             LoggerUtil.exception(TAG,e);
             throw ServiceExceptionUtils.handleApplicationException(e.getMessage());
         }
+    }
+
+    public static void main(String[] ahihi) {
+
+         String requestId = "01";
+         BookingDistribution bookingDistribution = new BookingDistribution();
+
+         BookingHistory bookingHistory = bookingDistribution.bookingHistoryRepository.findByRequestId(requestId);
+         bookingDistribution.arrivedBookingRequest(bookingHistory);
     }
 }

@@ -1,13 +1,16 @@
 package backend.drivor.base.domain.message;
 
 import backend.drivor.base.domain.response.BookingHistoryResponse;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
 @Data
 @Builder
+@AllArgsConstructor
 public class AdminMessage<T> {
 
     private String msgId;
