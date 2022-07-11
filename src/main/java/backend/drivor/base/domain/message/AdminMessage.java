@@ -1,5 +1,6 @@
 package backend.drivor.base.domain.message;
 
+import backend.drivor.base.domain.response.BookingHistoryResponse;
 import lombok.Builder;
 import lombok.Data;
 
@@ -23,8 +24,10 @@ public class AdminMessage<T> {
         time = System.currentTimeMillis();
     }
 
-    public AdminMessage(String name, String type, T data) {
+    public AdminMessage(String from, String to, String name, String type, T data) {
         this();
+        this.from = from;
+        this.to = to;
         this.name = name;
         this.type = type;
         this.data = data;

@@ -24,6 +24,8 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class BookingServiceImpl extends ServiceBase implements BookingService {
 
+    private static final String TAG = BookingServiceImpl.class.getSimpleName();
+
     @Autowired
     private RabbitMQSender messageSender;
 
@@ -120,6 +122,7 @@ public class BookingServiceImpl extends ServiceBase implements BookingService {
 //            Send message to RabbitMQ
             MqMessage message = new MqMessage(RabbitMQConfig.EXCHANGE_BOOKING, RabbitMQConfig.QUEUE_BOOKING + "_INIT_INDEX" ,RabbitMQConfig.ROUTING_KEY_BOOKING + "_INIT_INDEX", bookingHistory);
             this.messageSender.send(message);
+            LoggerUtil.i(TAG, "Sending Message to the Queue : " + GsonSingleton.getInstance().toJson(message.getMessage()));
 
         } catch (Exception e) {
             if (accountWallet != null)
@@ -152,6 +155,14 @@ public class BookingServiceImpl extends ServiceBase implements BookingService {
 
        // Send message to RabbitMQ
 
-        return null;
+        MqMessage message = new MqMessage(RabbitMQConfig.EXCHANGE_BOOKING, RabbitMQConfig.QUEUE_BOOKING + "_ARRIVED_BOOKING" ,RabbitMQConfig.ROUTING_KEY_BOOKING + "_ARRIVED_BOOKING", bookingHistory);
+
+        try {
+            this.messageSender.send(message);
+            LoggerUtil.i(TAG, "Sending Message to the Queue : " + GsonSingleton.getInstance().toJson(message.getMessage()));
+            return new GeneralSubmitResponse(true);
+        }catch (Exception e) {
+            throw ServiceExceptionUtils.handleApplicationException(e.getMessage());
+        }
     }
 }

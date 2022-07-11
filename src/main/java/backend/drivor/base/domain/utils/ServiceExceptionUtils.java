@@ -102,4 +102,9 @@ public class ServiceExceptionUtils {
     public static ServiceException unAuthorize() {
         return new ServiceException(ERROR_UNAUTHORIZE, HttpStatus.UNAUTHORIZED);
     }
+
+    public static ServiceException handleApplicationException(String message) {
+        return new ServiceException(message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }

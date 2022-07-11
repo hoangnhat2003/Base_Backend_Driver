@@ -24,6 +24,7 @@ public class InitIndexReceiver {
         try {
             LoggerUtil.i(TAG, "Booking from queue : " + GsonSingleton.getInstance().toJson(bookingHistory));
             event.createBookingIndex(bookingHistory);
+            LoggerUtil.i(TAG, String.format("Process data from queue {}", bookingHistory));
         } catch (Exception e) {
             LoggerUtil.exception(TAG, e);
         }

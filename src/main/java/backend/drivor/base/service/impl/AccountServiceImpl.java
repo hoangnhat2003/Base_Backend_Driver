@@ -149,4 +149,26 @@ public class AccountServiceImpl extends ServiceBase implements AccountService {
 
         return response;
     }
+
+    @Override
+    public ChatAccount getChatAccountByAccount(Account account) {
+
+        Optional<ChatAccount> chatAccount = Optional.ofNullable(chatAccountRepository.findByAccount(account));
+
+        if(!chatAccount.isPresent()) {
+            throw ServiceExceptionUtils.accountNotFound();
+        }
+        return chatAccount.get();
+    }
+
+    @Override
+    public Account findAccountById(Long id) {
+
+        Optional<Account> account = accountRepository.findById(id);
+
+        if(!account.isPresent()) {
+            throw ServiceExceptionUtils.accountNotFound();
+        }
+        return account.get();
+    }
 }
