@@ -1,5 +1,6 @@
 package backend.drivor.base.service.distribution;
 
+import backend.drivor.base.config.websocket.WebsocketClientEndpoint;
 import backend.drivor.base.consumer.event.BookingEvent;
 import backend.drivor.base.domain.constant.BookingHistoryStatus;
 import backend.drivor.base.domain.constant.RedisConstant;
@@ -15,10 +16,16 @@ import backend.drivor.base.domain.response.GeneralSubmitResponse;
 import backend.drivor.base.domain.utils.LoggerUtil;
 import backend.drivor.base.domain.utils.ServiceExceptionUtils;
 import backend.drivor.base.service.ServiceBase;
+import org.glassfish.tyrus.client.ClientManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import javax.websocket.DeploymentException;
+import javax.websocket.MessageHandler;
+import javax.websocket.Session;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -33,8 +40,8 @@ public class BookingDistribution extends ServiceBase implements BookingEvent {
     public void sendMessageBookingRequestUpdated(BookingHistory bookingHistory, Account account) {
 
         Account user = bookingHistory.getRequester_account_id() != null
-                       ? accountService.findAccountById(bookingHistory.getRequester_account_id())
-                       : null;
+                ? accountService.findAccountById(bookingHistory.getRequester_account_id())
+                : null;
 
         ChatAccount userChatAccount = accountService.getChatAccountByAccount(user);
 
@@ -46,9 +53,9 @@ public class BookingDistribution extends ServiceBase implements BookingEvent {
 
         BookingHistoryResponse response = null;
 
-        if(user != null && driver != null) {
+        if (user != null && driver != null) {
             response = new BookingHistoryResponse(bookingHistory, user, driver);
-        }else {
+        } else {
             response = new BookingHistoryResponse();
         }
         AdminMessage<BookingHistoryResponse> message = new AdminMessage<>(
@@ -63,8 +70,8 @@ public class BookingDistribution extends ServiceBase implements BookingEvent {
         try {
             sendMessageAsync.send(account, messageJson);
             LoggerUtil.i(TAG, String.format("Sending messsage booking request updated to requester: {}", message.getTo()));
-        }catch (Exception e) {
-            LoggerUtil.exception(TAG,e);
+        } catch (Exception e) {
+            LoggerUtil.exception(TAG, e);
             throw ServiceExceptionUtils.handleApplicationException(e.getMessage());
         }
     }
@@ -82,18 +89,48 @@ public class BookingDistribution extends ServiceBase implements BookingEvent {
             redisCache.setWithExpire(RedisConstant.PREFIX_BOOKING_REQUEST + ":" + bookingHistory.getRequestId(), GsonSingleton.getInstance().toJson(bookingHistory), (int) TimeUnit.MINUTES.toSeconds(30));
 
             sendMessageBookingRequestUpdated(bookingHistory, account);
-        }catch (Exception e) {
-            LoggerUtil.exception(TAG,e);
+        } catch (Exception e) {
+            LoggerUtil.exception(TAG, e);
             throw ServiceExceptionUtils.handleApplicationException(e.getMessage());
         }
     }
 
-    public static void main(String[] ahihi) {
 
-         String requestId = "01";
-         BookingDistribution bookingDistribution = new BookingDistribution();
+    /**
+     * Implement main function to test class {@link BookingDistribution}
+     *
+     * @throws Exception
+     */
+    public static void main(String[] vaicalon) throws Exception {
 
-         BookingHistory bookingHistory = bookingDistribution.bookingHistoryRepository.findByRequestId(requestId);
-         bookingDistribution.arrivedBookingRequest(bookingHistory);
+        String requestId = "01";
+        BookingDistribution bd = new BookingDistribution();
+
+        BookingHistory bookingHistory = bd.bookingHistoryRepository.findByRequestId(requestId);
+        bd.arrivedBookingRequest(bookingHistory);
+
+        /**
+         * Account of receiver.
+         * Start connect to websocket server to log message received.
+         */
+        String chat_username = "";
+        String chat_password = "";
+        URI uri;
+        try {
+            uri = new URI(String.format("ws://localhost:8080/chat/%s/%s", chat_username, chat_password));
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        ClientManager client = ClientManager.createClient();
+
+        Session session = client.connectToServer(WebsocketClientEndpoint.class, uri);
+        session.addMessageHandler(new MessageHandler.Whole<String>() {
+            @Override
+            public void onMessage(String message) {
+                LoggerUtil.i(TAG, String.format("Received from websocket server: {}" + message));
+            }
+        });
     }
 }
