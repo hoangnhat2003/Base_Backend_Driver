@@ -6,6 +6,7 @@ import backend.drivor.base.domain.constant.*;
 import backend.drivor.base.domain.document.*;
 import backend.drivor.base.domain.model.MqMessage;
 import backend.drivor.base.domain.model.VehicleInfo;
+import backend.drivor.base.domain.request.AcceptBookingRequest;
 import backend.drivor.base.domain.request.DriverArrivedRequest;
 import backend.drivor.base.domain.request.NewBookingRequest;
 import backend.drivor.base.domain.response.BookingHistoryResponse;
@@ -136,6 +137,11 @@ public class BookingServiceImpl extends ServiceBase implements BookingService {
     }
 
     @Override
+    public GeneralSubmitResponse acceptBookingRequest(Account account, AcceptBookingRequest request) {
+        return null;
+    }
+
+    @Override
     public GeneralSubmitResponse arrivedBookingRequest(Account account, DriverArrivedRequest request) {
 
         String requestId = request.getRequest_id();
@@ -154,10 +160,8 @@ public class BookingServiceImpl extends ServiceBase implements BookingService {
             throw ServiceExceptionUtils.unAuthorize();
 
        // Send message to RabbitMQ
-
-        MqMessage message = new MqMessage(RabbitMQConfig.EXCHANGE_BOOKING, RabbitMQConfig.QUEUE_BOOKING + "_ARRIVED_BOOKING" ,RabbitMQConfig.ROUTING_KEY_BOOKING + "_ARRIVED_BOOKING", bookingHistory);
-
         try {
+            MqMessage message = new MqMessage(RabbitMQConfig.EXCHANGE_BOOKING, RabbitMQConfig.QUEUE_BOOKING + "_ARRIVED_BOOKING" ,RabbitMQConfig.ROUTING_KEY_BOOKING + "_ARRIVED_BOOKING", bookingHistory);
             this.messageSender.send(message);
             LoggerUtil.i(TAG, "Sending Message to the Queue : " + GsonSingleton.getInstance().toJson(message.getMessage()));
             return new GeneralSubmitResponse(true);
@@ -165,4 +169,6 @@ public class BookingServiceImpl extends ServiceBase implements BookingService {
             throw ServiceExceptionUtils.handleApplicationException(e.getMessage());
         }
     }
+
+
 }
