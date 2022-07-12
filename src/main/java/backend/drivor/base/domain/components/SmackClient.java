@@ -30,7 +30,8 @@ public class SmackClient {
     @Autowired
     private XMPPMessageTransmitter xmppMessageTransmitter;
 
-    private final XMPPProperties xmppProperties;
+    @Autowired
+    private  XMPPProperties xmppProperties;
 
     public Optional<XMPPConnection> connect() {
         XMPPConnection connection;

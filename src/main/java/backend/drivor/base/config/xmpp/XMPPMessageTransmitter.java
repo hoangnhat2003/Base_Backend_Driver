@@ -6,6 +6,7 @@ import backend.drivor.base.domain.utils.LoggerUtil;
 import backend.drivor.base.domain.utils.WebSocketTextMessageHelper;
 import lombok.RequiredArgsConstructor;
 import org.jivesoftware.smack.packet.Message;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.Session;
@@ -16,7 +17,8 @@ public class XMPPMessageTransmitter {
 
     private static final String TAG = XMPPMessageTransmitter.class.getSimpleName();
 
-    private final WebSocketTextMessageHelper webSocketTextMessageHelper;
+    @Autowired
+    private  WebSocketTextMessageHelper webSocketTextMessageHelper;
 
     public void sendResponse(Message message, Session session) {
 

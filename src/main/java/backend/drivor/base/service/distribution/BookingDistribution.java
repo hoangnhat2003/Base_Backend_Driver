@@ -2,31 +2,27 @@ package backend.drivor.base.service.distribution;
 
 import backend.drivor.base.config.websocket.WebsocketClientEndpoint;
 import backend.drivor.base.consumer.event.BookingEvent;
-import backend.drivor.base.domain.constant.BookingHistoryStatus;
-import backend.drivor.base.domain.constant.RedisConstant;
-import backend.drivor.base.domain.document.ChatAccount;
-import backend.drivor.base.domain.utils.GsonSingleton;
 import backend.drivor.base.domain.components.SendMessageAsync;
+import backend.drivor.base.domain.constant.BookingHistoryStatus;
 import backend.drivor.base.domain.constant.MessageConstants;
+import backend.drivor.base.domain.constant.RedisConstant;
 import backend.drivor.base.domain.document.Account;
 import backend.drivor.base.domain.document.BookingHistory;
+import backend.drivor.base.domain.document.ChatAccount;
 import backend.drivor.base.domain.message.AdminMessage;
 import backend.drivor.base.domain.response.BookingHistoryResponse;
-import backend.drivor.base.domain.response.GeneralSubmitResponse;
+import backend.drivor.base.domain.utils.GsonSingleton;
 import backend.drivor.base.domain.utils.LoggerUtil;
 import backend.drivor.base.domain.utils.ServiceExceptionUtils;
 import backend.drivor.base.service.ServiceBase;
 import org.glassfish.tyrus.client.ClientManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
-import javax.websocket.DeploymentException;
 import javax.websocket.MessageHandler;
 import javax.websocket.Session;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Component

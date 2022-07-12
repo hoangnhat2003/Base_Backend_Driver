@@ -1,8 +1,12 @@
 package backend.drivor.base.config.rabbitmq;
 
+import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
+import org.springframework.amqp.rabbit.core.ChannelCallback;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +14,9 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 public class DirectExchangeChannel {
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     private String exchangeName;
     private Channel channel;
@@ -20,6 +27,16 @@ public class DirectExchangeChannel {
         this.connection = connection;
         this.channel = connection.createChannel();
     }
+
+    public boolean ensureExchangeExists(String exchangeName) throws IOException {
+        AMQP.Exchange.DeclareOk exchangeFromRabbit = channel.exchangeDeclarePassive(exchangeName);
+        if (exchangeFromRabbit == null) {
+            return false;
+        }
+
+        return true;
+    }
+
 
     public void declareExchange() throws IOException {
         // exchangeDeclare( exchange, builtinExchangeType, durable)

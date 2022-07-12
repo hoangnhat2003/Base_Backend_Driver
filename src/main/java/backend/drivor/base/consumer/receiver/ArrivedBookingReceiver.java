@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-@RabbitListener(queues = RabbitMQConfig.QUEUE_BOOKING + "_ARRIVED_BOOKING")
+//@RabbitListener(queues = RabbitMQConfig.QUEUE_BOOKING + "_ARRIVED_BOOKING")
 public class ArrivedBookingReceiver {
 
     private static final String TAG = ArrivedBookingReceiver.class.getSimpleName();
