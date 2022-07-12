@@ -8,20 +8,17 @@ import backend.drivor.base.domain.utils.ServiceExceptionUtils;
 import lombok.RequiredArgsConstructor;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.SmackException;
+import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.chat2.Chat;
 import org.jivesoftware.smack.chat2.ChatManager;
-import org.jivesoftware.smack.tcp.XMPPTCPConnection;
-import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
-import org.jxmpp.jid.EntityBareJid;
-import org.jxmpp.jid.EntityFullJid;
+import org.jivesoftware.smack.packet.Presence;
 import org.jxmpp.jid.impl.JidCreate;
 import org.jxmpp.stringprep.XmppStringprepException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.Session;
-import java.io.IOException;
 import java.util.Optional;
 
 @Component
@@ -35,24 +32,26 @@ public class SmackClient {
 
     private final XMPPProperties xmppProperties;
 
-    public Optional<XMPPTCPConnection> connect(String username, String plainTextPassword) {
-        XMPPTCPConnection connection;
+    public Optional<XMPPConnection> connect() {
+        XMPPConnection connection;
         try {
-            EntityBareJid entityBareJid;
-            entityBareJid = JidCreate.entityBareFrom(username + "@" + xmppProperties.getDomain());
-            XMPPTCPConnectionConfiguration config = XMPPTCPConnectionConfiguration.builder()
-                    .setHost(xmppProperties.getHost())
-                    .setPort(xmppProperties.getPort())
-                    .setXmppDomain(xmppProperties.getDomain())
-                    .setUsernameAndPassword(entityBareJid.getLocalpart(), plainTextPassword)
-                    .setSecurityMode(ConnectionConfiguration.SecurityMode.disabled)
-                    .setResource(entityBareJid.getResourceOrEmpty())
-                    .setSendPresence(true)
-                    .build();
+            ConnectionConfiguration config=new ConnectionConfiguration(xmppProperties.getHost(),xmppProperties.getPort());
+            config.setSecurityMode(ConnectionConfiguration.SecurityMode.required);
+            config.setSendPresence(true);
+            config.setServiceName(xmppProperties.getHost());
+            config.setDebuggerEnabled(false);
+            config.setSASLAuthenticationEnabled(true);
 
-            connection = new XMPPTCPConnection(config);
+            connection = new XMPPConnection(config);
             connection.connect();
-        }catch ( IOException | XMPPException e) {
+
+            if (connection.isConnected()) {
+                LoggerUtil.i(TAG, String.format("Smack Message Client connected to server with host: {} and port: {}", xmppProperties.getHost(), xmppProperties.getPort()));
+            }
+
+            Presence presence = new Presence(Presence.Type.available, "Online, Update Priority", 24, Presence.Mode.available);
+            connection.sendPacket(presence);
+        }catch (XMPPException e) {
             LoggerUtil.e(TAG, e.getMessage());
             return Optional.empty();
         }catch (Exception e) {
@@ -62,20 +61,20 @@ public class SmackClient {
         return Optional.of(connection);
     }
 
-    public void login(XMPPTCPConnection connection) {
+    public void login(XMPPConnection connection, String username, String password) {
         try {
-            connection.login();
-        } catch (XMPPException | SmackException | IOException | InterruptedException e) {
+            connection.login(username, password);
+        } catch (XMPPException e) {
             LoggerUtil.exception(TAG, e);
             LoggerUtil.e(TAG,String.format("Login to XMPP server with user {} failed.", connection.getUser()));
 
-            EntityFullJid user = connection.getUser();
+            Object user = connection.getUser();
             throw ServiceExceptionUtils.connectionError(user == null ? "unknown" : user.toString());
         }
         LoggerUtil.i(TAG, String.format("User '{}' logged in.", connection.getUser()));
     }
 
-    public void sendMessage(XMPPTCPConnection connection, String message, String to) {
+    public void sendMessage(XMPPConnection connection, String message, String to) {
         ChatManager chatManager = ChatManager.getInstanceFor(connection);
         try {
             Chat chat = chatManager.chatWith(JidCreate.entityBareFrom(to + "@" + xmppProperties.getDomain()));
@@ -87,18 +86,15 @@ public class SmackClient {
         }
     }
 
-    public void addIncomingMessageListener(XMPPTCPConnection connection, Session webSocketSession) {
+    public void addIncomingMessageListener(XMPPConnection connection, Session webSocketSession) {
         ChatManager chatManager = ChatManager.getInstanceFor(connection);
         chatManager.addIncomingListener((from, message, chat) -> xmppMessageTransmitter
                 .sendResponse(message, webSocketSession));
         LoggerUtil.i(TAG, String.format("Incoming message listener for user '{}' added.", connection.getUser()));
     }
 
-    public void disconnect(XMPPTCPConnection connection) {
+    public void disconnect(XMPPConnection connection) {
         connection.disconnect();
         LoggerUtil.i(TAG, "Smack Message Client disconnected");
     }
-
-
-
 }

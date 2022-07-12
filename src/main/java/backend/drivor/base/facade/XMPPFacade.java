@@ -1,23 +1,22 @@
 package backend.drivor.base.facade;
 
-import backend.drivor.base.domain.utils.GsonSingleton;
 import backend.drivor.base.domain.components.SmackClient;
 import backend.drivor.base.domain.document.ChatAccount;
 import backend.drivor.base.domain.exception.XMPPGenericException;
 import backend.drivor.base.domain.message.AdminMessage;
 import backend.drivor.base.domain.repository.ChatAccountRepository;
+import backend.drivor.base.domain.utils.GsonSingleton;
 import backend.drivor.base.domain.utils.LoggerUtil;
 import backend.drivor.base.domain.utils.ServiceExceptionUtils;
 import lombok.RequiredArgsConstructor;
-import org.jivesoftware.smack.packet.Presence;
-import org.jivesoftware.smack.roster.RosterEntry;
-import org.jivesoftware.smack.tcp.XMPPTCPConnection;
+import org.jivesoftware.smack.XMPPConnection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import sun.rmi.runtime.Log;
 
 import javax.websocket.Session;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -25,7 +24,7 @@ public class XMPPFacade {
 
     private static final String TAG = XMPPFacade.class.getSimpleName();
 
-    private static final Map<Session, XMPPTCPConnection> CONNECTIONS = new HashMap<>();
+    private static final Map<Session, XMPPConnection> CONNECTIONS = new HashMap<>();
 
     @Autowired
     private SmackClient smackClient;
@@ -41,7 +40,7 @@ public class XMPPFacade {
              throw ServiceExceptionUtils.accountNotFound();
         }
 
-        Optional<XMPPTCPConnection> connection = smackClient.connect(username, password);
+        Optional<XMPPConnection> connection = smackClient.connect();
 
         if (!connection.isPresent()) {
             throw ServiceExceptionUtils.connectionFailed();
@@ -51,7 +50,7 @@ public class XMPPFacade {
         LoggerUtil.i(TAG, "Session was stored.");
 
         try {
-            smackClient.login(connection.get());
+            smackClient.login(connection.get(), username, password);
         } catch (XMPPGenericException e) {
             handleXMPPGenericException(session, connection.get(), e);
             return;
@@ -62,7 +61,7 @@ public class XMPPFacade {
     }
 
     public void sendMessage(AdminMessage message, Session session) {
-        XMPPTCPConnection connection = CONNECTIONS.get(session);
+        XMPPConnection connection = CONNECTIONS.get(session);
 
         if (connection == null) {
             return;
@@ -77,7 +76,7 @@ public class XMPPFacade {
 
     public void disconnect(Session session) {
 
-        XMPPTCPConnection connection = CONNECTIONS.get(session);
+        XMPPConnection connection = CONNECTIONS.get(session);
 
         if (connection == null) {
             return;
@@ -87,7 +86,7 @@ public class XMPPFacade {
         CONNECTIONS.remove(session);
     }
 
-    private void handleXMPPGenericException(Session session, XMPPTCPConnection connection, Exception e) {
+    private void handleXMPPGenericException(Session session, XMPPConnection connection, Exception e) {
 
         LoggerUtil.exception(TAG, e);
         LoggerUtil.e(TAG, "XMPP error. Disconnecting and removing session...");
