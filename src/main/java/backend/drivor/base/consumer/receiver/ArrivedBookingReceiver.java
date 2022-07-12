@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-//@RabbitListener(queues = RabbitMQConfig.QUEUE_BOOKING + "_ARRIVED_BOOKING")
+@RabbitListener(queues = RabbitMQConfig.QUEUE_BOOKING + "_ARRIVED_BOOKING", autoStartup = "false")
 public class ArrivedBookingReceiver {
 
     private static final String TAG = ArrivedBookingReceiver.class.getSimpleName();
@@ -20,13 +20,13 @@ public class ArrivedBookingReceiver {
     private BookingEvent event;
 
     @RabbitHandler
-    public void arrivedBookingRequest(String dataFromQueue) {
+    public void arrivedBookingRequest(BookingHistory dataFromQueue) {
 
         try {
-            LoggerUtil.i(TAG, "Booking from queue : " + dataFromQueue);
-            BookingHistory bookingHistory = GsonSingleton.getInstance().fromJson(dataFromQueue, BookingHistory.class);
-            event.arrivedBookingRequest(bookingHistory);
-            LoggerUtil.i(TAG, String.format("Process data from queue {}", dataFromQueue));
+            LoggerUtil.i(TAG, String.format("Booking from queue: {} " + dataFromQueue));
+//            BookingHistory bookingHistory = GsonSingleton.getInstance().fromJson(dataFromQueue, BookingHistory.class);
+            event.arrivedBookingRequest(dataFromQueue);
+            LoggerUtil.i(TAG, String.format("Process data from queue: {}", dataFromQueue));
         } catch (Exception e) {
             LoggerUtil.exception(TAG, e);
         }

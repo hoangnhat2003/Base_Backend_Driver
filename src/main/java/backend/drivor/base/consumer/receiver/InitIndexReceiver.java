@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-@RabbitListener(queues = RabbitMQConfig.QUEUE_BOOKING + "_INIT_INDEX")
+@RabbitListener(queues = RabbitMQConfig.QUEUE_BOOKING + "_INIT_INDEX", autoStartup = "false")
 public class InitIndexReceiver {
 
     private static final String TAG = InitIndexReceiver.class.getSimpleName();
