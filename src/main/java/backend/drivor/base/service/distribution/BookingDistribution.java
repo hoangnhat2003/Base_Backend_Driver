@@ -15,8 +15,9 @@ import backend.drivor.base.domain.utils.GsonSingleton;
 import backend.drivor.base.domain.utils.LoggerUtil;
 import backend.drivor.base.domain.utils.ServiceExceptionUtils;
 import backend.drivor.base.service.ServiceBase;
-import org.glassfish.tyrus.client.ClientManager;
+import javax.websocket.ContainerProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import javax.websocket.WebSocketContainer;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.MessageHandler;
@@ -91,7 +92,6 @@ public class BookingDistribution extends ServiceBase implements BookingEvent {
         }
     }
 
-
     /**
      * Implement main function to test class {@link BookingDistribution}
      *
@@ -99,18 +99,12 @@ public class BookingDistribution extends ServiceBase implements BookingEvent {
      */
     public static void main(String[] vaicalon) throws Exception {
 
-        String requestId = "01";
-        BookingDistribution bd = new BookingDistribution();
-
-        BookingHistory bookingHistory = bd.bookingHistoryRepository.findByRequestId(requestId);
-        bd.arrivedBookingRequest(bookingHistory);
-
         /**
          * Account of receiver.
          * Start connect to websocket server to log message received.
          */
-        String chat_username = "";
-        String chat_password = "";
+        String chat_username = "driver";
+        String chat_password = "driver123";
         URI uri;
         try {
             uri = new URI(String.format("ws://localhost:8080/chat/%s/%s", chat_username, chat_password));
@@ -119,9 +113,11 @@ public class BookingDistribution extends ServiceBase implements BookingEvent {
             return;
         }
 
-        ClientManager client = ClientManager.createClient();
-
-        Session session = client.connectToServer(WebsocketClientEndpoint.class, uri);
+//        ClientManager client = ClientManager.createClient();
+//
+//        Session session = client.connectToServer(WebsocketClientEndpoint.class, uri);
+        WebSocketContainer container = ContainerProvider.getWebSocketContainer();
+        Session session = container.connectToServer(WebsocketClientEndpoint.class, uri);
         session.addMessageHandler(new MessageHandler.Whole<String>() {
             @Override
             public void onMessage(String message) {

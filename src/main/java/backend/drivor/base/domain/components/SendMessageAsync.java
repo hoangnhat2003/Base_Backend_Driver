@@ -6,6 +6,8 @@ import backend.drivor.base.domain.document.ChatAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.websocket.Session;
+
 @Component
 public class SendMessageAsync {
 

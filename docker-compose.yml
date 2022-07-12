@@ -56,6 +56,20 @@ services:
       - "5672:5672"
       - "15672:15672"
 
+  openfire:
+    container_name: openfire
+    image: quantumobject/docker-openfire
+    ports:
+      - "9091:9091"
+      - "5222:5222"
+      - "5269:5269"
+      - "5223:5223"
+      - "7443:7443"
+      - "7777:7777"
+      - "7070:7070"
+      - "5229:5229"
+      - "5275:5275"
+
 volumes:
   booking-redis:
     driver: local

@@ -6,6 +6,7 @@ import backend.drivor.base.domain.document.ChatAccount;
 import backend.drivor.base.domain.handler.AsyncHandler;
 import backend.drivor.base.domain.repository.ChatAccountRepository;
 import backend.drivor.base.domain.response.ChatAccountResponse;
+import backend.drivor.base.domain.utils.LoggerUtil;
 import backend.drivor.base.domain.utils.ServiceExceptionUtils;
 import backend.drivor.base.service.inf.AccountService;
 import org.glassfish.tyrus.client.ClientManager;
@@ -14,13 +15,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.websocket.ContainerProvider;
 import javax.websocket.DeploymentException;
 import javax.websocket.Session;
+import javax.websocket.WebSocketContainer;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.logging.Logger;
 
 @Component
 public class WebSocketConnect {
+
+    private static final String TAG = WebSocketConnect.class.getSimpleName();
 
     private Session session = null;
     @Autowired
@@ -34,17 +40,18 @@ public class WebSocketConnect {
      * @throws Exception
      */
     public void connect(String chat_username, String chat_password) throws Exception {
-        URI uri;
+        URI uri = null;
         try {
             uri = new URI(String.format("ws://localhost:8080/chat/%s/%s", chat_username, chat_password));
         } catch (URISyntaxException e) {
             e.printStackTrace();
-            return;
         }
 
-        ClientManager client = ClientManager.createClient();
-
-        session = client.connectToServer(WebsocketClientEndpoint.class, uri);
+        WebSocketContainer container = ContainerProvider.getWebSocketContainer();
+        Session session = container.connectToServer(WebsocketClientEndpoint.class, uri);
+        if(session == null) {
+            LoggerUtil.e(TAG, "Failed to connect to web socket server. Session null");
+        }
     }
 
     /**

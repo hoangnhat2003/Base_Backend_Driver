@@ -2,12 +2,15 @@ package backend.drivor.base.api.controller.booking;
 
 import backend.drivor.base.api.controller.BaseController;
 import backend.drivor.base.domain.document.Account;
+import backend.drivor.base.domain.document.BookingHistory;
+import backend.drivor.base.domain.repository.BookingHistoryRepository;
 import backend.drivor.base.domain.request.AcceptBookingRequest;
 import backend.drivor.base.domain.request.DriverArrivedRequest;
 import backend.drivor.base.domain.request.NewBookingRequest;
 import backend.drivor.base.domain.response.ApiResponse;
 import backend.drivor.base.domain.response.BookingHistoryResponse;
 import backend.drivor.base.domain.response.GeneralSubmitResponse;
+import backend.drivor.base.service.distribution.BookingDistribution;
 import backend.drivor.base.service.inf.BookingService;
 import backend.drivor.base.service.searchbooking.model.BookingSearchResponse;
 import backend.drivor.base.service.searchbooking.service.BookingSearchService;
@@ -26,6 +29,11 @@ public class BookingController extends BaseController {
     @Autowired
     private BookingService bookingService;
 
+    @Autowired
+    private BookingDistribution bookingDistribution;
+
+    @Autowired
+    private BookingHistoryRepository bookingHistoryRepository;
     @Autowired
     private BookingSearchService bookingSearchService;
 
@@ -72,13 +80,15 @@ public class BookingController extends BaseController {
     public ResponseEntity<?> arrivedBookingRequest(@Valid @RequestBody DriverArrivedRequest request) {
 
         Account account = getLoggedAccount();
+        //        GeneralSubmitResponse data = bookingService.arrivedBookingRequest(account, request);
 
-        GeneralSubmitResponse data = bookingService.arrivedBookingRequest(account, request);
+        BookingHistory bookingHistory = bookingHistoryRepository.findByRequestId(request.getRequest_id());
 
+        bookingDistribution.arrivedBookingRequest(bookingHistory);
         ApiResponse<GeneralSubmitResponse> response = new ApiResponse<>();
         response.setCode(HttpStatus.OK.name());
         response.setMessage("Arrived booking request successfully!");
-        response.setData(data);
+        response.setData(null);
 
         return ResponseEntity.ok(response);
     }
