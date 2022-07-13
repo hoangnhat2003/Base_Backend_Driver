@@ -107,22 +107,13 @@ public class BookingDistribution extends ServiceBase implements BookingEvent {
         String chat_password = "driver123";
         URI uri;
         try {
-            uri = new URI(String.format("ws://localhost:8080/chat/%s/%s", chat_username, chat_password));
+            uri = new URI(String.format("ws://localhost:8099/chat/%s/%s", chat_username, chat_password));
         } catch (URISyntaxException e) {
             e.printStackTrace();
             return;
         }
 
-//        ClientManager client = ClientManager.createClient();
-//
-//        Session session = client.connectToServer(WebsocketClientEndpoint.class, uri);
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
         Session session = container.connectToServer(WebsocketClientEndpoint.class, uri);
-        session.addMessageHandler(new MessageHandler.Whole<String>() {
-            @Override
-            public void onMessage(String message) {
-                LoggerUtil.i(TAG, String.format("Received from websocket server: {}" + message));
-            }
-        });
     }
 }
