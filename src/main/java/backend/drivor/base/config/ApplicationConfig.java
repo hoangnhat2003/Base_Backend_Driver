@@ -1,10 +1,13 @@
 package backend.drivor.base.config;
 
+import backend.drivor.base.facade.XMPPFacade;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@ComponentScan
 public class ApplicationConfig {
 
     @Bean

@@ -22,7 +22,6 @@ import javax.websocket.Session;
 import java.util.Optional;
 
 @Component
-@RequiredArgsConstructor
 public class SmackClient {
 
     private static final String TAG = SmackClient.class.getSimpleName();

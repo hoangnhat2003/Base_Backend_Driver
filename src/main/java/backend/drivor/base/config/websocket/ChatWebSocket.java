@@ -16,13 +16,11 @@ public class ChatWebSocket {
 
     private static final String TAG = ChatWebSocket.class.getSimpleName();
 
-    @Autowired
-    private XMPPFacade xmppFacade;
-
     @OnOpen
     public void open(Session session, @PathParam("username") String username, @PathParam("password") String password) {
         LoggerUtil.i(TAG, String.format("Successful connection, username = %s, password = %s", username, password));
         LoggerUtil.i(TAG, String.format("On open, session_id = %s", session.getId()));
+        XMPPFacade xmppFacade = new XMPPFacade();
         if(xmppFacade == null) {
             LoggerUtil.i(TAG, "xmppFacade null");
         }
@@ -33,6 +31,7 @@ public class ChatWebSocket {
     public void handleMessage(AdminMessage message, Session session) {
         LoggerUtil.i(TAG, String.format("message received from client, %s", message));
         LoggerUtil.i(TAG, String.format("On message, session_id = %s", session.getId()));
+        XMPPFacade xmppFacade = new XMPPFacade();
         if(xmppFacade == null) {
             LoggerUtil.i(TAG, "xmppFacade null");
         }
@@ -43,6 +42,7 @@ public class ChatWebSocket {
     public void close(Session session) {
         LoggerUtil.i(TAG, String.format("On close, session_id = %s", session.getId()));
         LoggerUtil.i(TAG, "Connection close");
+        XMPPFacade xmppFacade = new XMPPFacade();
         if(xmppFacade == null) {
             LoggerUtil.i(TAG, "xmppFacade null");
         }
@@ -53,6 +53,7 @@ public class ChatWebSocket {
     public void onError(Throwable e, Session session) {
         LoggerUtil.i(TAG, String.format("On error, session_id = %s", session.getId()));
         LoggerUtil.exception(TAG, (Exception) e);
+        XMPPFacade xmppFacade = new XMPPFacade();
         if(xmppFacade == null) {
             LoggerUtil.i(TAG, "xmppFacade null");
         }

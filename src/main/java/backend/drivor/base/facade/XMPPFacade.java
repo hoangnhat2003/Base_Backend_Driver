@@ -10,14 +10,15 @@ import backend.drivor.base.domain.utils.LoggerUtil;
 import backend.drivor.base.domain.utils.ServiceExceptionUtils;
 import org.jivesoftware.smack.XMPPConnection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.websocket.Session;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@Component
 public class XMPPFacade {
 
     private static final String TAG = XMPPFacade.class.getSimpleName();
