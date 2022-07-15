@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 
 
 @ClientEndpoint(encoders = AdminMessageEncoder.class, decoders = AdminMessageDecoder.class)
+@Component
 public class WebsocketClientEndpoint  {
 
     private static final String TAG = WebsocketClientEndpoint.class.getSimpleName();
@@ -49,7 +50,7 @@ public class WebsocketClientEndpoint  {
      */
     @OnClose
     public void onClose(Session session, CloseReason reason) {
-         LoggerUtil.i(TAG, String.format("Closing session => '{}' - '{}'", session, reason));
+         LoggerUtil.i(TAG, String.format("Closing session => %s - %s", session.getId(), reason.getReasonPhrase()));
     }
 
 }

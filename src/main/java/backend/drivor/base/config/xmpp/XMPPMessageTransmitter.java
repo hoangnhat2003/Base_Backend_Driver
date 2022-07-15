@@ -22,7 +22,7 @@ public class XMPPMessageTransmitter {
 
     public void sendResponse(Message message, Session session) {
 
-        LoggerUtil.i(TAG, String.format("New message from '{}' to '{}': {}", message.getFrom(), message.getTo(), message.getBody()));
+        LoggerUtil.i(TAG, String.format("New message from: %s to: %s : %s", message.getFrom(), message.getTo(), message.getBody()));
         String content = message.getBody();
         webSocketTextMessageHelper.send(
                 session,

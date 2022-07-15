@@ -5,6 +5,8 @@ import backend.drivor.base.domain.document.ChatAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.websocket.Session;
+
 @Component
 public class SendMessageAsync {
 
@@ -16,10 +18,10 @@ public class SendMessageAsync {
         ChatAccount chatAccount = webSocketConnect.getChatAccountInfo(account);
 
         // Connect to websocket server
-        webSocketConnect.connect(chatAccount.getUsername(), chatAccount.getPassword());
+        Session session = webSocketConnect.connect(chatAccount.getUsername(), chatAccount.getPassword());
 
         // Send message
-        webSocketConnect.sendMessageAsync(message);
+        webSocketConnect.sendMessageAsync(message, session);
 
     }
 }

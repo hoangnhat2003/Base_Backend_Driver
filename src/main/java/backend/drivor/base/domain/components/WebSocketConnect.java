@@ -20,8 +20,6 @@ import java.net.URISyntaxException;
 public class WebSocketConnect {
 
     private static final String TAG = WebSocketConnect.class.getSimpleName();
-
-    private Session session = null;
     @Autowired
     private ChatAccountRepository chatAccountRepository;
 
@@ -32,7 +30,7 @@ public class WebSocketConnect {
      * @param chat_password
      * @throws Exception
      */
-    public void connect(String chat_username, String chat_password) throws Exception {
+    public Session connect(String chat_username, String chat_password) throws Exception {
         URI uri = null;
         try {
             uri = new URI(String.format("ws://localhost:8099/chat/%s/%s", chat_username, chat_password));
@@ -45,6 +43,8 @@ public class WebSocketConnect {
         if(session == null) {
             LoggerUtil.e(TAG, "Failed to connect to web socket server. Session null");
         }
+
+        return session;
     }
 
     /**
@@ -65,13 +65,17 @@ public class WebSocketConnect {
 
     /**
      * Send message async
+     *
      * @param message
+     * @param session
      * @throws Exception
      */
-    public void sendMessageAsync(String message) throws Exception {
+    public void sendMessageAsync(String message, Session session) throws Exception {
 
         AsyncHandler.run(() -> {
+            LoggerUtil.i(TAG, String.format("Start send message with session id = %s", session.getId()));
             session.getBasicRemote().sendText(message);
+            LoggerUtil.i(TAG, String.format("Finished send message with session id = %s", session.getId()));
             return null;
         });
     }

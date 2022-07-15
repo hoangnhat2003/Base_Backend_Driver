@@ -8,7 +8,6 @@ import backend.drivor.base.domain.repository.ChatAccountRepository;
 import backend.drivor.base.domain.utils.GsonSingleton;
 import backend.drivor.base.domain.utils.LoggerUtil;
 import backend.drivor.base.domain.utils.ServiceExceptionUtils;
-import lombok.RequiredArgsConstructor;
 import org.jivesoftware.smack.XMPPConnection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,7 +18,6 @@ import java.util.Map;
 import java.util.Optional;
 
 @Component
-@RequiredArgsConstructor
 public class XMPPFacade {
 
     private static final String TAG = XMPPFacade.class.getSimpleName();
@@ -34,6 +32,7 @@ public class XMPPFacade {
 
     public void startSession(Session session, String username, String password) {
 
+        LoggerUtil.i(TAG, String.format("Start session, session_id = %s", session.getId()));
         Optional<ChatAccount> chatAccount = Optional.ofNullable(chatAccountRepository.findByUsername(username));
 
         if (!chatAccount.isPresent()) {
@@ -43,6 +42,7 @@ public class XMPPFacade {
         Optional<XMPPConnection> connection = smackClient.connect();
 
         if (!connection.isPresent()) {
+            LoggerUtil.e(TAG, "Connect to XMPP server failed");
             throw ServiceExceptionUtils.connectionFailed();
         }
 
@@ -61,6 +61,7 @@ public class XMPPFacade {
     }
 
     public void sendMessage(AdminMessage message, Session session) {
+        LoggerUtil.i(TAG, String.format("Start send message, session_id = %s", session.getId()));
         XMPPConnection connection = CONNECTIONS.get(session);
 
         if (connection == null) {
@@ -75,7 +76,7 @@ public class XMPPFacade {
     }
 
     public void disconnect(Session session) {
-
+        LoggerUtil.i(TAG, String.format("Start disconnect, session_id = %s", session.getId()));
         XMPPConnection connection = CONNECTIONS.get(session);
 
         if (connection == null) {

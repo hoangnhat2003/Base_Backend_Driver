@@ -47,7 +47,7 @@ public class SmackClient {
             connection.connect();
 
             if (connection.isConnected()) {
-                LoggerUtil.i(TAG, String.format("Smack Message Client connected to server with host: {} and port: {}", xmppProperties.getHost(), xmppProperties.getPort()));
+                LoggerUtil.i(TAG, String.format("Smack Message Client connected to server with host: %s and port: %s", xmppProperties.getHost(), xmppProperties.getPort()));
             }
 
             Presence presence = new Presence(Presence.Type.available, "Online, Update Priority", 24, Presence.Mode.available);
@@ -67,12 +67,12 @@ public class SmackClient {
             connection.login(username, password);
         } catch (XMPPException e) {
             LoggerUtil.exception(TAG, e);
-            LoggerUtil.e(TAG,String.format("Login to XMPP server with user {} failed.", connection.getUser()));
+            LoggerUtil.e(TAG,String.format("Login to XMPP server with user: %s failed.", connection.getUser()));
 
             Object user = connection.getUser();
             throw ServiceExceptionUtils.connectionError(user == null ? "unknown" : user.toString());
         }
-        LoggerUtil.i(TAG, String.format("User '{}' logged in.", connection.getUser()));
+        LoggerUtil.i(TAG, String.format("User: %s logged in.", connection.getUser()));
     }
 
     public void sendMessage(XMPPConnection connection, String message, String to) {
@@ -80,7 +80,7 @@ public class SmackClient {
         try {
             Chat chat = chatManager.chatWith(JidCreate.entityBareFrom(to + "@" + xmppProperties.getDomain()));
             chat.send(message);
-            LoggerUtil.i(TAG, String.format("Message sent to user '{}' from user '{}'.", to, connection.getUser()));
+            LoggerUtil.i(TAG, String.format("Message sent to user: %s' from user: %s.", to, connection.getUser()));
         } catch (XmppStringprepException | SmackException.NotConnectedException | InterruptedException e) {
             LoggerUtil.exception(TAG,e);
             throw new XMPPGenericException(connection.getUser().toString());
@@ -91,7 +91,7 @@ public class SmackClient {
         ChatManager chatManager = ChatManager.getInstanceFor(connection);
         chatManager.addIncomingListener((from, message, chat) -> xmppMessageTransmitter
                 .sendResponse(message, webSocketSession));
-        LoggerUtil.i(TAG, String.format("Incoming message listener for user '{}' added.", connection.getUser()));
+        LoggerUtil.i(TAG, String.format("Incoming message listener for user: %s added.", connection.getUser()));
     }
 
     public void disconnect(XMPPConnection connection) {

@@ -20,5 +20,4 @@ public class WebSocketTextMessageHelper {
             LoggerUtil.exception(TAG, e);
         }
     }
-
 }

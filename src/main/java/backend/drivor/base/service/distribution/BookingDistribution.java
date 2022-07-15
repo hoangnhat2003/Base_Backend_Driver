@@ -15,13 +15,12 @@ import backend.drivor.base.domain.utils.GsonSingleton;
 import backend.drivor.base.domain.utils.LoggerUtil;
 import backend.drivor.base.domain.utils.ServiceExceptionUtils;
 import backend.drivor.base.service.ServiceBase;
-import javax.websocket.ContainerProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import javax.websocket.WebSocketContainer;
 import org.springframework.stereotype.Component;
 
-import javax.websocket.MessageHandler;
+import javax.websocket.ContainerProvider;
 import javax.websocket.Session;
+import javax.websocket.WebSocketContainer;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.concurrent.TimeUnit;
@@ -66,7 +65,7 @@ public class BookingDistribution extends ServiceBase implements BookingEvent {
 
         try {
             sendMessageAsync.send(account, messageJson);
-            LoggerUtil.i(TAG, String.format("Sending messsage booking request updated to requester: {}", message.getTo()));
+            LoggerUtil.i(TAG, String.format("Sending messsage booking request updated to requester: %s", message.getTo()));
         } catch (Exception e) {
             LoggerUtil.exception(TAG, e);
             throw ServiceExceptionUtils.handleApplicationException(e.getMessage());
