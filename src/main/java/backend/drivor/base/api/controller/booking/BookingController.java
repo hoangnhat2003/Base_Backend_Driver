@@ -58,7 +58,12 @@ public class BookingController extends BaseController {
 
         BookingHistoryResponse data = bookingService.newBookingRequest(account, request);
 
-        return ResponseEntity.ok(new ApiResponse(HttpStatus.OK.name(), "New booking request successfully!", data));
+        ApiResponse<BookingHistoryResponse> response = new ApiResponse<>();
+        response.setCode(HttpStatus.OK.name());
+        response.setMessage("New booking request successfully!");
+        response.setData(data);
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/accept")
