@@ -9,12 +9,11 @@ Tech stack:
      - Message Queue: RabbitMQ
      - Cache: Redis
      - Search Engine: ElasticSearch
-     - Unit test: JUnit, Mockito
      - Log Management: Elasticsearch, Logstash, Kibana
      - Docker
      - CI/CD: Circle CI, Heruko
      - Database: MySQL
-     - Send real-time message: XMPP protocol, Smack Client, WebSocket, Openfire(XMPP server)
+     - Send real-time message: WebSocket
      - Send SMS: Twilio
      - AWS: S3, RDS
      - Monitoring: Grafana & Prometheus 
@@ -27,11 +26,6 @@ Access Database Local: (Cài đặt DBeaver hoặc tạo connection mới trong 
    - Host: localhost
    - Username: root
    - Password: hoangnhat
-
-
-Flow Send Message Function:
-
-![](FlowChat.png)
 
 
 Reference document:
