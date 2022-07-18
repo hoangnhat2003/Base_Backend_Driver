@@ -51,7 +51,7 @@ public class BookingController extends BaseController {
         return ResponseEntity.ok(new ApiResponse(HttpStatus.OK.name(), null, response));
     }
 
-    @PostMapping("/newBookingRequest")
+    @PostMapping("/new")
     public ResponseEntity<?> newBookingRequest(@Valid @RequestBody NewBookingRequest request) {
 
         Account account = getLoggedAccount();
@@ -61,7 +61,7 @@ public class BookingController extends BaseController {
         return ResponseEntity.ok(new ApiResponse(HttpStatus.OK.name(), "New booking request successfully!", data));
     }
 
-    @PostMapping("/acceptBookingRequest")
+    @PostMapping("/accept")
     public ResponseEntity<?> acceptBookingRequest(@Valid @RequestBody AcceptBookingRequest request) {
 
         Account account = getLoggedAccount();
@@ -76,19 +76,16 @@ public class BookingController extends BaseController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/arrivedBookingRequest")
+    @PostMapping("/arrived")
     public ResponseEntity<?> arrivedBookingRequest(@Valid @RequestBody DriverArrivedRequest request) {
 
         Account account = getLoggedAccount();
-        //        GeneralSubmitResponse data = bookingService.arrivedBookingRequest(account, request);
+        GeneralSubmitResponse data = bookingService.arrivedBookingRequest(account, request);
 
-        BookingHistory bookingHistory = bookingHistoryRepository.findByRequestId(request.getRequest_id());
-
-        bookingDistribution.arrivedBookingRequest(bookingHistory);
         ApiResponse<GeneralSubmitResponse> response = new ApiResponse<>();
         response.setCode(HttpStatus.OK.name());
         response.setMessage("Arrived booking request successfully!");
-        response.setData(null);
+        response.setData(data);
 
         return ResponseEntity.ok(response);
     }

@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.ContainerProvider;
+import javax.websocket.MessageHandler;
 import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
 import java.net.URI;
@@ -64,7 +65,7 @@ public class BookingDistribution extends ServiceBase implements BookingEvent {
         String messageJson = GsonSingleton.getInstance().toJson(message);
 
         try {
-            sendMessageAsync.send(account, messageJson);
+            sendMessageAsync.send(userChatAccount, messageJson);
             LoggerUtil.i(TAG, String.format("Sending messsage booking request updated to requester: %s", message.getTo()));
         } catch (Exception e) {
             LoggerUtil.exception(TAG, e);
@@ -102,8 +103,8 @@ public class BookingDistribution extends ServiceBase implements BookingEvent {
          * Account of receiver.
          * Start connect to websocket server to log message received.
          */
-        String chat_username = "driver";
-        String chat_password = "driver123";
+        String chat_username = "hoangnhat123";
+        String chat_password = "hoangnhat123";
         URI uri;
         try {
             uri = new URI(String.format("ws://localhost:8099/chat/%s/%s", chat_username, chat_password));

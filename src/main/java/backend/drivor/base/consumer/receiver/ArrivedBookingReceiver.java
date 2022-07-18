@@ -24,7 +24,6 @@ public class ArrivedBookingReceiver {
 
         try {
             LoggerUtil.i(TAG, String.format("Booking from queue: {} " + dataFromQueue));
-//            BookingHistory bookingHistory = GsonSingleton.getInstance().fromJson(dataFromQueue, BookingHistory.class);
             event.arrivedBookingRequest(dataFromQueue);
             LoggerUtil.i(TAG, String.format("Process data from queue: {}", dataFromQueue));
         } catch (Exception e) {

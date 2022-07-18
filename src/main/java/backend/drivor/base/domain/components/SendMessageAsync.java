@@ -13,12 +13,11 @@ public class SendMessageAsync {
     @Autowired
     private WebSocketConnect webSocketConnect;
 
-    public void send(Account account, String message) throws Exception {
+    public void send(ChatAccount userAccount, String message) throws Exception {
 
-        ChatAccount chatAccount = webSocketConnect.getChatAccountInfo(account);
 
         // Connect to websocket server
-        Session session = webSocketConnect.connect(chatAccount.getUsername(), chatAccount.getPassword());
+        Session session = webSocketConnect.connect(userAccount.getUsername(), userAccount.getPassword());
 
         // Send message
         webSocketConnect.sendMessageAsync(message, session);
