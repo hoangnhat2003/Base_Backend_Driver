@@ -19,23 +19,14 @@ public class Producer {
         // Create channel
         channel = new DirectExchangeChannel(connection, exchange);
 
-        boolean isExchangeExisted = channel.ensureExchangeExists(exchange);
+        // Create direct exchange
+        channel.declareExchange();
 
-        if(isExchangeExisted) {
-            // Create queues
-            channel.declareQueues(queue);
+        // Create queues
+        channel.declareQueues(queue);
 
-            // Binding queues with routing keys
-            channel.performQueueBinding(queue, routingKey);
-        }else {
-            // Create direct exchange
-            channel.declareExchange();
+        // Binding queues with routing keys
+        channel.performQueueBinding(queue, routingKey);
 
-            // Create queues
-            channel.declareQueues(queue);
-
-            // Binding queues with routing keys
-            channel.performQueueBinding(queue, routingKey);
-        }
     }
 }

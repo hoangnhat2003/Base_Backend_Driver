@@ -182,6 +182,9 @@ public class BookingServiceImpl extends ServiceBase implements BookingService {
         BookingHistory bookingHistory = getDateFromCache(requestId);
 
         if (bookingHistory == null)
+            bookingHistory = bookingHistoryRepository.findByRequestId(requestId);
+
+        if (bookingHistory == null)
             throw ServiceExceptionUtils.invalidParam("request_id");
 
         if (!BookingHistoryStatus.ACCEPTED.equals(bookingHistory.getStatus()))
@@ -212,10 +215,10 @@ public class BookingServiceImpl extends ServiceBase implements BookingService {
 
         BookingHistory bookingHistory = GsonSingleton.getInstance().fromJson(dataFromCache, BookingHistory.class);
 
-        if (bookingHistory != null) {
-            return bookingHistory;
+        if (bookingHistory == null) {
+            return bookingHistoryRepository.findByRequestId(requestId);
         }
 
-        return null;
+        return bookingHistory;
     }
 }

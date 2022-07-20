@@ -17,7 +17,7 @@ public abstract class BaseController {
     protected Account getLoggedAccount() {
 
 //        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        String username = "hoangnhat";
+        String username = "driver";
         Account account = accountService.findAccountByUsername(username);
 
         return  account;
