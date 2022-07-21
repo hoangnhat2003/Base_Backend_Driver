@@ -15,8 +15,7 @@ Tech stack:
      - Database: MySQL
      - Send real-time message: WebSocket
      - Send SMS: Twilio
-     - AWS: S3, RDS
-     - Monitoring: Grafana & Prometheus 
+     - AWS: S3
      - VNPAY API Integration ( Payment Service )
 
 

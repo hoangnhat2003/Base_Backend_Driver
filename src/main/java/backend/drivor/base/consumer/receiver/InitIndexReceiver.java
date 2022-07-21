@@ -5,12 +5,16 @@ import backend.drivor.base.consumer.event.InitIndexEvent;
 import backend.drivor.base.domain.document.BookingHistory;
 import backend.drivor.base.domain.utils.GsonSingleton;
 import backend.drivor.base.domain.utils.LoggerUtil;
+import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.rabbit.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-@RabbitListener(queues = RabbitMQConfig.QUEUE_BOOKING + "_INIT_INDEX", autoStartup = "false")
+@RabbitListener(bindings = @QueueBinding(
+        value = @Queue(value = RabbitMQConfig.QUEUE_BOOKING + "_INIT_INDEX", durable = "true"),
+        exchange = @Exchange(value = RabbitMQConfig.EXCHANGE_BOOKING, durable = "true", type = ExchangeTypes.DIRECT)
+))
 public class InitIndexReceiver {
 
     private static final String TAG = InitIndexReceiver.class.getSimpleName();
