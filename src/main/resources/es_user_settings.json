@@ -1,0 +1,75 @@
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "autocomplete_filter": {
+          "type": "edge_ngram",
+          "min_gram": 1,
+          "max_gram": 20
+        },
+        "english_stop": {
+          "type": "stop",
+          "stopwords": "_english_"
+        },
+        "english_stemmer": {
+          "type": "stemmer",
+          "language": "english"
+        },
+        "english_possessive_stemmer": {
+          "type": "stemmer",
+          "language": "possessive_english"
+        }
+      },
+      "analyzer": {
+        "autocomplete": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "autocomplete_filter"
+          ]
+        },
+        "ngram_analyzer": {
+          "tokenizer": "ngram_tokenizer",
+          "filter": [
+            "lowercase"
+          ]
+        },
+        "edge_ngram_analyzer": {
+          "tokenizer": "edge_ngram_tokenizer",
+          "filter": [
+            "lowercase"
+          ]
+        },
+        "english_analyzer": {
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "english_stop",
+            "unique",
+            "english_possessive_stemmer",
+            "english_stemmer"
+          ],
+          "keyword_analyzer": {
+            "tokenizer": "keyword",
+            "filter": [
+              "lowercase"
+            ]
+          }
+        },
+        "tokenizer": {
+          "ngram_tokenizer": {
+            "type": "ngram",
+            "min_gram": 1,
+            "max_gram": 20
+          },
+          "edge_ngram_tokenizer": {
+            "type": "edge_ngram",
+            "min_gram": 1,
+            "max_gram": 20
+          }
+        }
+      }
+    }
+  }
+}

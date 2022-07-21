@@ -50,14 +50,3 @@ VALUES ('CAR', 80, 8, null, 30 );
 
 INSERT INTO billing_config (vehicle_type, price_per_km, price_per_m, extend_price, price_per_hour)
 VALUES ('BIKE', 40, 4, null, 20 );
-
-
-
-
-
-
-
-
-
-
-

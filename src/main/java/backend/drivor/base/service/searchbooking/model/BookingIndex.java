@@ -1,22 +1,19 @@
 package backend.drivor.base.service.searchbooking.model;
 
-import backend.drivor.base.domain.model.BookingLocation;
-import backend.drivor.base.domain.model.VehicleInfo;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
-
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Transient;
-import java.util.Date;
+import org.springframework.data.elasticsearch.annotations.Setting;
 
 @Data
 @Builder
-@Document(indexName = "booking")
+@Document(
+        indexName = "${elasticsearch.index}",
+        createIndex = false
+)@Setting(settingPath = "es_user_settings.json")
 public class BookingIndex {
 
     @Id

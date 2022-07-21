@@ -2,25 +2,17 @@ package backend.drivor.base.api.controller.account;
 
 import backend.drivor.base.api.controller.BaseController;
 import backend.drivor.base.domain.document.Account;
-import backend.drivor.base.domain.document.RefreshToken;
 import backend.drivor.base.domain.request.ChangePasswordRequest;
 import backend.drivor.base.domain.request.ChatAccountRequest;
-import backend.drivor.base.domain.request.RefreshTokenRequest;
 import backend.drivor.base.domain.response.ApiResponse;
 import backend.drivor.base.domain.response.ChatAccountResponse;
-import backend.drivor.base.domain.response.TokenRefreshResponse;
-import backend.drivor.base.domain.utils.LoggerUtil;
-import backend.drivor.base.domain.utils.ServiceExceptionUtils;
 import backend.drivor.base.service.inf.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.Optional;
 
 @RequestMapping("/account")
