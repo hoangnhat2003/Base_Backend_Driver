@@ -3,15 +3,14 @@
 Project xây dựng Backend API cho hệ thống đặt xe
 
 Tech stack:
-
-Backend: 
    - Spring boot, JPA, Hibernate, MySQL
    - Authentication: JWT, OAuth2 (Connect with Facebook, Google)
-   - Message Queue: RabbitMQ, Cache: Redis, Search Engine: ElasticSearch
+   - Message Queue: RabbitMQ
+   - Cache: Redis
+   - Search Engine: ElasticSearch
    - Send real-time message: WebSocket
    - VNPAY API Integration ( Payment Service )
    - AWS services: EC2,S3,RDS
-Deployment:
    - Docker, Heroku
    - CI/CD: Jenkins
 
