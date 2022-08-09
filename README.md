@@ -1,23 +1,18 @@
 # Base_Backend_Drivor
 
-Project xây dựng Backend API cho hệ thống đặt xe 
+Project xây dựng Backend API cho hệ thống đặt xe
 
 Tech stack:
-
-     - Spring boot, JPA, Hibernate
-     - Authentication: JWT, OAuth2 (Connect with Facebook, Google)
-     - Message Queue: RabbitMQ
-     - Cache: Redis
-     - Search Engine: ElasticSearch
-     - Log Management: Elasticsearch, Logstash, Kibana
-     - Docker
-     - CI/CD: Circle CI, Heruko
-     - Database: MySQL
-     - Send real-time message: WebSocket
-     - Send SMS: Twilio
-     - AWS: S3
-     - VNPAY API Integration ( Payment Service )
-
+   Backend: 
+      - Spring boot, JPA, Hibernate, MySQL
+      - Authentication: JWT, OAuth2 (Connect with Facebook, Google)
+      - Message Queue: RabbitMQ, Cache: Redis, Search Engine: ElasticSearch
+      - Send real-time message: WebSocket
+      - VNPAY API Integration ( Payment Service )
+      - AWS services: EC2,S3,RDS
+   Deployment:
+      - Docker, Heroku
+      - CI/CD: Jenkins
 
 Access Database Local: (Cài đặt DBeaver hoặc tạo connection mới trong MySQL WorkBench)
    - DB name: backend-drivor
