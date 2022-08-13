@@ -13,10 +13,11 @@ services:
     ports:
       - '6379:6379'
 
-  db:
+  mysql:
     image: mysql:8.0
     container_name: mysql
     restart: always
+    hostname: mysql
     environment:
       - MYSQL_ROOT_PASSWORD=hoangnhat
       - MYSQL_DATABASE=backend-drivor
@@ -26,15 +27,16 @@ services:
       - booking-backend-app
     volumes:
       - data:/var/lib/mysql
-      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./src/main/resources/db/init.sql:/docker-entrypoint-initdb.d/init.sql
 
-  es:
+  elasticsearch:
     container_name: elastic_search
     image: docker.elastic.co/elasticsearch/elasticsearch:6.8.23
     ports:
       - 9200:9200
       - 9300:9300
-    restart: unless-stopped
+    restart: always
+    hostname: elasticsearch
     networks:
       - booking-backend-app
     volumes:
@@ -49,6 +51,7 @@ services:
     image: rabbitmq:3
     restart: always
     container_name: rabbitmq
+    command: docker exec rabbitmq rabbitmq-plugins enable rabbitmq_management
     hostname: rabbitmq
     networks:
       - booking-backend-app
@@ -56,6 +59,25 @@ services:
       - "5672:5672"
       - "15672:15672"
 
+  booking-backend:
+    container_name: booking-backend
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    env_file:
+      - ./.env
+    environment:
+      - JAVA_TOOL_OPTIONS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
+    ports:
+      - "8181:8181"
+      - "5005:5005"
+    depends_on:
+      - mysql
+      - redis
+      - rabbitmq
+      - elasticsearch
+    networks:
+      - booking-backend-app
 volumes:
   booking-redis:
     driver: local

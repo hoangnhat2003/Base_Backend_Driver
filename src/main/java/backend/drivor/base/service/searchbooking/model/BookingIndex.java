@@ -13,7 +13,7 @@ import org.springframework.data.elasticsearch.annotations.Setting;
 @Document(
         indexName = "${elasticsearch.index}",
         createIndex = false
-)@Setting(settingPath = "es_user_settings.json")
+)@Setting(settingPath = "es_booking_settings.json")
 public class BookingIndex {
 
     @Id
