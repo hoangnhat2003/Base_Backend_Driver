@@ -68,8 +68,7 @@ services:
     environment:
       - JAVA_TOOL_OPTIONS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
     ports:
-      - "9191:9191"
-      - "5005:5005"
+      - "8181:8080"
     depends_on:
       - mysql
       - redis
