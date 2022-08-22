@@ -51,7 +51,6 @@ services:
     image: rabbitmq:3
     restart: always
     container_name: rabbitmq
-    command: docker exec rabbitmq rabbitmq-plugins enable rabbitmq_management
     hostname: rabbitmq
     networks:
       - booking-backend-app
@@ -69,7 +68,7 @@ services:
     environment:
       - JAVA_TOOL_OPTIONS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
     ports:
-      - "8181:8181"
+      - "9191:9191"
       - "5005:5005"
     depends_on:
       - mysql
