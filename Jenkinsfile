@@ -10,20 +10,26 @@ pipeline {
               sh 'mvn clean install'
             }
         }
-        stage('Login to Docker Hub'){
+        stage('Build Docker Image'){
             steps {
-              sh 'docker-compose up -d --build'
+              sh 'docker build -t  nhathoang07/booking-backend:v1 .'
             }
         }
-        stage('Push image to Docker Hub'){
+        stage('Docker Push') {
+            agent any
             steps {
-               sh 'docker-compose up -d --build'
-            }
+              withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+                sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+                sh 'docker push nhathoang07/booking-backend:v1'
+              }
+           }
         }
         stage ('Deploy') {
             steps {
-               sh 'scp docker-compose.dev.yml ${REMOTE_USER}@${REMOTE_HOST}:~/'
-               sh 'ssh ${REMOTE_USER}@${REMOTE_HOST} ./deploy.ssh'
+               sh 'sftp -i "webserver.pem" ubuntu@ip'
+               sh 'put docker-compose.dev.yml'
+               sh 'ssh -i "webserver.pem" ubuntu@ip'
+               sh 'docker-compose -f docker-compose.dev.yml up -d --build'
             }
         }
     }
@@ -31,9 +37,9 @@ pipeline {
     post {
         success {
           echo "SUCCESSFUL"
-        }
+       }
         failure {
           echo "FAILED"
-        }
       }
+   }
 }
