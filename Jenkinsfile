@@ -4,6 +4,10 @@ pipeline {
         maven '3.6.3'
     }
 
+    environment {
+       DOCKERHUB_CREDENTIALS=credentials('dockerhub')
+    }
+
     stages {
         stage('Clean and Install'){
             steps {
@@ -12,16 +16,12 @@ pipeline {
         }
         stage('Build Docker Image'){
             steps {
-              sh 'docker build -t  nhathoang07/booking-backend:v1 .'
+              sh 'docker build -t nhathoang07/booking-backend:v1 .'
             }
         }
         stage('Docker Push') {
-            agent any
             steps {
-              withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
-                sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
-                sh 'docker push nhathoang07/booking-backend:v1'
-              }
+              sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
            }
         }
         stage ('Deploy') {
