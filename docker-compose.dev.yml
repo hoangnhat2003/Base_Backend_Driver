@@ -27,7 +27,8 @@ services:
       - booking-backend-app
     volumes:
       - data:/var/lib/mysql
-      - ./src/main/resources/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./src/main/resources/db/booking.sql:/data/application/booking.sql
+    command: --init-file /data/application/booking.sql
 
   elasticsearch:
     container_name: elastic_search
