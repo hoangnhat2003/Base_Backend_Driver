@@ -22,13 +22,11 @@ pipeline {
         stage('Docker Push') {
             steps {
               sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+              sh 'docker push nhathoang07/booking-backend:v1'
            }
         }
         stage ('Deploy') {
             steps {
-               sh 'sftp -i "webserver.pem" ubuntu@ip'
-               sh 'put docker-compose.dev.yml'
-               sh 'ssh -i "webserver.pem" ubuntu@ip'
                sh 'docker-compose -f docker-compose.dev.yml up -d --build'
             }
         }
