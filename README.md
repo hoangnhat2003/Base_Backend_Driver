@@ -36,6 +36,7 @@ Reference document:
        Right click Command Prompt -> Run as administrator -> Type command : winget install qishibo.AnotherRedisDesktopManager
      )
    - Elasticsearch: [Example of Elasticsearch with Spring boot](https://reflectoring.io/spring-boot-elasticsearch/)
+   - View data from Elasticsearch: `http://localhost:9200/{indexName}/_search?pretty`
    - Exception Handling in Spring boot App: [Handle exception in Spring boot](https://viblo.asia/p/spring-boot-15-exception-handling-exceptionhandler-restcontrolleradvice-controlleradvice-responsestatus-maGK7k2eKj2)
    - WebSocket: [Using WebSocket to build an interactive web application](https://spring.io/guides/gs/messaging-stomp-websocket/) || [Implement Websocket Server and Websocket client using Java](https://viblo.asia/p/su-dung-java-tao-websocket-de-tao-ung-dung-chat-gDVK2QAw5Lj) / 
-   - [Integrating websocket with spring boot](https://programming.vip/docs/four-ways-of-integrating-websocket-with-spring-boot.html)
+   - WebSocket with Spring boot[Integrating websocket with spring boot](https://programming.vip/docs/four-ways-of-integrating-websocket-with-spring-boot.html)

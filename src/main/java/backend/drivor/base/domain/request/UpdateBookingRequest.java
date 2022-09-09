@@ -8,7 +8,8 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
-public class NewBookingRequest {
+public class UpdateBookingRequest {
+    private Long id;
     @NotNull
     @NotEmpty
     private String request_id;

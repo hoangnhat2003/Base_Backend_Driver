@@ -62,7 +62,7 @@ created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO IF NOT EXISTS vehicle (account_id, make, seats, type)
+INSERT INTO vehicle (account_id, make, seats, type)
 VALUES (1, "2020", 4, 'CAR');
 INSERT INTO vehicle (account_id, make, type)
 VALUES (1, "2021",'CAR');

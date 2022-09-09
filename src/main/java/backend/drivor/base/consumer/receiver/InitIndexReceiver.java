@@ -1,7 +1,7 @@
 package backend.drivor.base.consumer.receiver;
 
 import backend.drivor.base.config.rabbitmq.RabbitMQConfig;
-import backend.drivor.base.consumer.event.InitIndexEvent;
+import backend.drivor.base.consumer.event.IndexChangeEvent;
 import backend.drivor.base.domain.document.BookingHistory;
 import backend.drivor.base.domain.utils.GsonSingleton;
 import backend.drivor.base.domain.utils.LoggerUtil;
@@ -20,7 +20,7 @@ public class InitIndexReceiver {
     private static final String TAG = InitIndexReceiver.class.getSimpleName();
 
     @Autowired
-    private InitIndexEvent event;
+    private IndexChangeEvent event;
 
     @RabbitHandler
     public void createBookingIndex(BookingHistory bookingHistory) {

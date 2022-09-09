@@ -17,7 +17,7 @@ import org.springframework.data.elasticsearch.annotations.Setting;
 public class BookingIndex {
 
     @Id
-    @Field(name = "booking_id",type = FieldType.Long)
+    @Field(name = "id",type = FieldType.Long)
     private Long id;
 
     @Field(name = "requestId", type = FieldType.Text)

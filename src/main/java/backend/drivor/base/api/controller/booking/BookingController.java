@@ -2,11 +2,11 @@ package backend.drivor.base.api.controller.booking;
 
 import backend.drivor.base.api.controller.BaseController;
 import backend.drivor.base.domain.document.Account;
-import backend.drivor.base.domain.document.BookingHistory;
 import backend.drivor.base.domain.repository.BookingHistoryRepository;
 import backend.drivor.base.domain.request.AcceptBookingRequest;
 import backend.drivor.base.domain.request.DriverArrivedRequest;
 import backend.drivor.base.domain.request.NewBookingRequest;
+import backend.drivor.base.domain.request.UpdateBookingRequest;
 import backend.drivor.base.domain.response.ApiResponse;
 import backend.drivor.base.domain.response.BookingHistoryResponse;
 import backend.drivor.base.domain.response.GeneralSubmitResponse;
@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -66,6 +67,39 @@ public class BookingController extends BaseController {
         return ResponseEntity.ok(response);
     }
 
+    @PutMapping
+    public ResponseEntity<?> updateBookingRequest(@Valid @RequestBody UpdateBookingRequest request) {
+
+        Account account = getLoggedAccount();
+
+        BookingHistoryResponse data = bookingService.updateBookingRequest(account, request);
+
+        ApiResponse<BookingHistoryResponse> response = new ApiResponse<>();
+        response.setCode(HttpStatus.OK.name());
+        response.setMessage("Update booking request successfully!");
+        response.setData(data);
+
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * Role Admin
+     * @param ids
+     * @return
+     */
+    @DeleteMapping
+    public ResponseEntity<?> deleteBookingRequest(@RequestBody List<Long> ids) {
+
+        GeneralSubmitResponse result = bookingService.deleteBookingRequest(ids);
+
+        ApiResponse<GeneralSubmitResponse> response = new ApiResponse<>();
+        response.setCode(HttpStatus.OK.name());
+        response.setMessage("Delete booking request successfully!");
+        response.setData(result);
+
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/accept")
     public ResponseEntity<?> acceptBookingRequest(@Valid @RequestBody AcceptBookingRequest request) {
 
@@ -75,7 +109,7 @@ public class BookingController extends BaseController {
 
         ApiResponse<GeneralSubmitResponse> response = new ApiResponse<>();
         response.setCode(HttpStatus.OK.name());
-        response.setMessage("Arrived booking request successfully!");
+        response.setMessage("Accepted booking request successfully!");
         response.setData(data);
 
         return ResponseEntity.ok(response);

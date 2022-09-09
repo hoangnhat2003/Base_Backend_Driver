@@ -55,6 +55,9 @@ public class BookingHistory {
     private boolean billing_updated;
     private String billing_status;
     private String billing_transaction_id;
+    private Long createdBy;
     private Long createDate;
+    private Long updatedBy;
+    private Long updatedDate;
     private String note;
 }

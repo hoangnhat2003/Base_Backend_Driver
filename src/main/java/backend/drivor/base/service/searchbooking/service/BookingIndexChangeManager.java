@@ -1,8 +1,7 @@
 package backend.drivor.base.service.searchbooking.service;
 
 import backend.drivor.base.config.elasticsearch.ElasticsearchConfig;
-import backend.drivor.base.consumer.event.InitIndexEvent;
-import backend.drivor.base.consumer.receiver.InitIndexReceiver;
+import backend.drivor.base.consumer.event.IndexChangeEvent;
 import backend.drivor.base.domain.document.BookingHistory;
 import backend.drivor.base.domain.utils.GsonSingleton;
 import backend.drivor.base.domain.utils.LoggerUtil;
@@ -16,9 +15,9 @@ import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BookingIndexManager implements InitIndexEvent {
+public class BookingIndexChangeManager implements IndexChangeEvent {
 
-    private static final String TAG = BookingIndexManager.class.getSimpleName();
+    private static final String TAG = BookingIndexChangeManager.class.getSimpleName();
 
 
     @Autowired
@@ -65,6 +64,11 @@ public class BookingIndexManager implements InitIndexEvent {
                 .build();
 
         this.indexBooking(bookingIndex);
+    }
+
+    @Override
+    public void deleteBookingIndex(Long id) {
+
     }
 
     private void indexBooking(@NonNull BookingIndex bookingIndex) {

@@ -9,6 +9,7 @@ import backend.drivor.base.domain.model.VehicleInfo;
 import backend.drivor.base.domain.request.AcceptBookingRequest;
 import backend.drivor.base.domain.request.DriverArrivedRequest;
 import backend.drivor.base.domain.request.NewBookingRequest;
+import backend.drivor.base.domain.request.UpdateBookingRequest;
 import backend.drivor.base.domain.response.BookingHistoryResponse;
 import backend.drivor.base.domain.response.GeneralSubmitResponse;
 import backend.drivor.base.domain.utils.*;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import redis.clients.jedis.GeoUnit;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -117,6 +119,7 @@ public class BookingServiceImpl extends ServiceBase implements BookingService {
             bookingHistory.setStatus(BookingHistoryStatus.CREATED);
             bookingHistory.setBilling_status(BillingStatus.IN_PROCESS);
             bookingHistory.setNote(request.getNote());
+            bookingHistory.setCreatedBy(account.getId());
             bookingHistory.setCreateDate(new Date().getTime());
             bookingHistory = bookingHistoryRepository.save(bookingHistory);
             redisCache.setWithExpire(RedisConstant.PREFIX_BOOKING_REQUEST + ":" + bookingHistory.getRequestId(), GsonSingleton.getInstance().toJson(bookingHistory), (int) TimeUnit.MINUTES.toSeconds(30));
@@ -172,6 +175,22 @@ public class BookingServiceImpl extends ServiceBase implements BookingService {
             LoggerUtil.exception(TAG, e);
             throw ServiceExceptionUtils.handleApplicationException(e.getMessage());
         }
+    }
+
+    @Override
+    public GeneralSubmitResponse deleteBookingRequest(List<Long> ids) {
+        try {
+            bookingHistoryRepository.deleteAllById(ids);
+            return new GeneralSubmitResponse(true);
+        }catch (Exception e) {
+            LoggerUtil.exception(TAG, e);
+            throw ServiceExceptionUtils.handleApplicationException(e.getMessage());
+        }
+    }
+
+    @Override
+    public BookingHistoryResponse updateBookingRequest(Account account, UpdateBookingRequest request) {
+        return null;
     }
 
     @Override
