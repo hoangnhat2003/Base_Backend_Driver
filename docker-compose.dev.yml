@@ -30,7 +30,7 @@ services:
       - booking-backend-app
     restart: unless-stopped
 
- elasticsearch:
+  elasticsearch:
     container_name: elastic_search
     image: docker.elastic.co/elasticsearch/elasticsearch:6.8.23
     ports:
@@ -49,15 +49,14 @@ services:
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
 
   rabbitmq:
-    image: rabbitmq:3
-    restart: always
+    image: rabbitmq:3-management-alpine
     container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
     hostname: rabbitmq
     networks:
       - booking-backend-app
-    ports:
-      - "5672:5672"
-      - "15672:15672"
 
   booking-backend:
     container_name: booking-backend
@@ -91,6 +90,7 @@ services:
       - elasticsearch
     networks:
       - booking-backend-app
+
 volumes:
   booking-redis:
     driver: local
