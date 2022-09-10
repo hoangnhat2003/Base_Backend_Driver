@@ -12,21 +12,21 @@ services:
     ports:
       - '6379:6379'
 
-  mysql:
-    image: mysql:8.0
-    container_name: mysql
-    restart: always
+  postgres:
+    container_name: postgres
+    image: postgres
     environment:
-      - MYSQL_ROOT_PASSWORD=hoangnhat
-      - MYSQL_DATABASE=backend-drivor
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+      - ./src/main/resources/db/booking.sql:/docker-entrypoint-initdb.d/booking.sql
     ports:
-      - '3306:3306'
+      - "5432:5432"
     networks:
       - booking-backend-app
-    volumes:
-      - data:/var/lib/mysql
-      - ./src/main/resources/db/booking.sql:/data/application/booking.sql
-    command: --init-file /data/application/booking.sql
+    restart: unless-stopped
 
   elasticsearch:
     container_name: elastic_search
@@ -55,30 +55,30 @@ services:
       - "5672:5672"
       - "15672:15672"
 
-#  booking-backend:
-#    container_name: booking-backend
-#    build:
-#      context: ./
-#      dockerfile: Dockerfile
-#    env_file:
-#      - ./.env
-#    environment:
-#      - JAVA_TOOL_OPTIONS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
-#    ports:
-#      - "8181:8080"
-#    depends_on:
-#      - mysql
-#      - redis
-#      - rabbitmq
-#      - elasticsearch
-#    networks:
-#      - booking-backend-app
+  booking-backend:
+    container_name: booking-backend
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    env_file:
+      - ./local.env
+    environment:
+      - JAVA_TOOL_OPTIONS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
+    ports:
+      - "8181:8080"
+    depends_on:
+      - postgres
+      - redis
+      - rabbitmq
+      - elasticsearch
+    networks:
+      - booking-backend-app
 volumes:
   booking-redis:
     driver: local
   booking-es:
     driver: local
-  data:
+  postgres:
     driver: local
 
 networks:

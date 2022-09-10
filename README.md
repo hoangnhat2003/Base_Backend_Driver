@@ -3,7 +3,7 @@
 Project xây dựng Backend API cho hệ thống đặt xe
 
 Tech stack:
-   - Spring boot, JPA, Hibernate, MySQL
+   - Spring boot, JPA, Hibernate, Postgres
    - Authentication: JWT, OAuth2 (Connect with Facebook, Google)
    - Message Queue: RabbitMQ
    - Cache: Redis
@@ -14,12 +14,12 @@ Tech stack:
    - Docker
    - CI/CD: Jenkins
 
-Access Database Local: (Cài đặt DBeaver hoặc tạo connection mới trong MySQL WorkBench)
-   - DB name: backend-drivor
-   - Port: 3306
+Access Database Local: (Cài đặt DBeaver)
+   - DB name: booking_db
+   - Port: 5432
    - Host: localhost
-   - Username: root
-   - Password: hoangnhat
+   - Username: postgres
+   - Password: password
 
 
 Reference document:

@@ -13,24 +13,24 @@ services:
     ports:
       - '6379:6379'
 
-  mysql:
-    image: mysql:8.0
-    container_name: mysql
-    restart: always
-    hostname: mysql
+  postgres:
+    container_name: postgres
+    hostname: postgres
+    image: postgres
     environment:
-      - MYSQL_ROOT_PASSWORD=hoangnhat
-      - MYSQL_DATABASE=backend-drivor
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+      - ./src/main/resources/db/booking.sql:/docker-entrypoint-initdb.d/booking.sql
     ports:
-      - '3306:3306'
+      - "5432:5432"
     networks:
       - booking-backend-app
-    volumes:
-      - data:/var/lib/mysql
-      - ./src/main/resources/db/booking.sql:/data/application/booking.sql
-    command: --init-file /data/application/booking.sql
+    restart: unless-stopped
 
-  elasticsearch:
+ elasticsearch:
     container_name: elastic_search
     image: docker.elastic.co/elasticsearch/elasticsearch:6.8.23
     ports:
@@ -63,11 +63,11 @@ services:
     container_name: booking-backend
     image: nhathoang07/booking-backend:v1
     environment:
-      - DB_URL=mysql
-      - DB_PORT=3306
-      - DB_NAME=backend-drivor
-      - DB_USER=root
-      - DB_PASSWORD=hoangnhat
+      - DB_URL=postgres
+      - DB_PORT=5432
+      - DB_NAME=booking_db
+      - DB_USER=postgres
+      - DB_PASSWORD=password
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - RABBITMQ_HOST=rabbitmq
@@ -85,7 +85,7 @@ services:
     ports:
       - "8181:8080"
     depends_on:
-      - mysql
+      - postgres
       - redis
       - rabbitmq
       - elasticsearch
@@ -96,7 +96,7 @@ volumes:
     driver: local
   booking-es:
     driver: local
-  data:
+  postgres:
     driver: local
 
 networks:
