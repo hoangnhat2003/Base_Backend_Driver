@@ -61,7 +61,7 @@ services:
       context: ./
       dockerfile: Dockerfile
     env_file:
-      - ./local.env
+      - ./.env
     environment:
       - JAVA_TOOL_OPTIONS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
     ports:
@@ -73,6 +73,7 @@ services:
       - elasticsearch
     networks:
       - booking-backend-app
+
 volumes:
   booking-redis:
     driver: local
