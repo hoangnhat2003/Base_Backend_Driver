@@ -7,14 +7,12 @@ services:
     hostname: redis
     networks:
       - booking-backend-app
-    container_name: redis
     volumes:
       - booking-redis:/data
     ports:
       - '6379:6379'
 
   postgres:
-    container_name: postgres
     hostname: postgres
     image: postgres
     environment:
@@ -31,7 +29,6 @@ services:
     restart: unless-stopped
 
   elasticsearch:
-    container_name: elastic_search
     image: docker.elastic.co/elasticsearch/elasticsearch:6.8.23
     ports:
       - 9200:9200
@@ -50,7 +47,6 @@ services:
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
-    container_name: rabbitmq
     ports:
       - 5672:5672
       - 15672:15672
@@ -59,7 +55,6 @@ services:
       - booking-backend-app
 
   booking-backend:
-    container_name: booking-backend
     image: nhathoang07/booking-backend:v1
     environment:
       - DB_URL=postgres
