@@ -23,7 +23,7 @@ services:
       - postgres:/data/postgres
       - ./src/main/resources/db/booking.sql:/docker-entrypoint-initdb.d/booking.sql
     ports:
-      - "5432:5432"
+      - "5433:5432"
     networks:
       - booking-backend-app
     restart: unless-stopped
