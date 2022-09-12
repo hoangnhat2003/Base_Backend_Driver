@@ -180,9 +180,20 @@ public class BookingServiceImpl extends ServiceBase implements BookingService {
     @Override
     public GeneralSubmitResponse deleteBookingRequest(List<Long> ids) {
         try {
+            List<BookingHistory> bookingHistories = (List<BookingHistory>) bookingHistoryRepository.findAllById(ids);
             bookingHistoryRepository.deleteAllById(ids);
+            bookingHistories.forEach(i -> {
+                try {
+                    // Send message to RabbitMQ
+                    MqMessage message = new MqMessage(RabbitMQConfig.EXCHANGE_BOOKING, RabbitMQConfig.QUEUE_BOOKING + "_DELETE_INDEX", RabbitMQConfig.ROUTING_KEY_BOOKING + "_DELETE_INDEX", i);
+                    this.messageSender.send(message);
+                    LoggerUtil.i(TAG, "Sending Message to the Queue : " + GsonSingleton.getInstance().toJson(message.getMessage()));
+                } catch (Exception e) {
+                    LoggerUtil.e(TAG, e.getMessage());
+                }
+            });
             return new GeneralSubmitResponse(true);
-        }catch (Exception e) {
+        } catch (Exception e) {
             LoggerUtil.exception(TAG, e);
             throw ServiceExceptionUtils.handleApplicationException(e.getMessage());
         }
@@ -222,7 +233,7 @@ public class BookingServiceImpl extends ServiceBase implements BookingService {
             throw ServiceExceptionUtils.handleApplicationException(e.getMessage());
         } finally {
             BookingHistory dataFromCache = getDateFromCache(requestId);
-            if(!BookingHistoryStatus.ACCEPTED.equals(dataFromCache.getStatus())) {
+            if (!BookingHistoryStatus.ACCEPTED.equals(dataFromCache.getStatus())) {
                 return new GeneralSubmitResponse(false);
             }
             return new GeneralSubmitResponse(true);

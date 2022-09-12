@@ -67,8 +67,12 @@ public class BookingIndexChangeManager implements IndexChangeEvent {
     }
 
     @Override
-    public void deleteBookingIndex(Long id) {
-
+    public void deleteBookingIndex(BookingHistory bookingHistory) {
+         try {
+             elasticsearchOperations.delete(bookingHistory.getId().toString(), IndexCoordinates.of(esConfig.getIndex()));
+         }catch (Exception e) {
+             LoggerUtil.e(TAG, e.getMessage());
+         }
     }
 
     private void indexBooking(@NonNull BookingIndex bookingIndex) {

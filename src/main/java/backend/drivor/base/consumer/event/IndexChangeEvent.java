@@ -5,6 +5,6 @@ import backend.drivor.base.domain.document.BookingHistory;
 public interface IndexChangeEvent {
     void createBookingIndex(BookingHistory bookingHistory);
 
-    void deleteBookingIndex(Long id);
+    void deleteBookingIndex(BookingHistory bookingHistory);
 
 }
