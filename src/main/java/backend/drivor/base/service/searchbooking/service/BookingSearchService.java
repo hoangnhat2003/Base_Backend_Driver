@@ -86,7 +86,7 @@ public class BookingSearchService {
                 .withQuery(boolQueryBuilder)
                 .withFilter(boolQueryBuilder)
                 .withSearchType(SearchType.DEFAULT)
-                .withSorts(SortBuilders.fieldSort("createdDate").order(SortOrder.DESC))
+                .withSorts(SortBuilders.fieldSort("createDate").order(SortOrder.DESC))
                 .build();
 
         SearchHits<BookingIndex> searchHits = elasticsearchOperations.search(query, BookingIndex.class, IndexCoordinates.of(esConfig.getIndex()));
