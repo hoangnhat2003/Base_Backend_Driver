@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent {label 'slave1'}
     tools {
         maven '3.6.3'
     }
@@ -9,6 +9,9 @@ pipeline {
     }
 
     stages {
+        stage('SCM Checkout'){
+             git branch: 'develop', credentialsId: 'git_credentials', url: 'https://github.com/hoangnhat2003/Base_Backend_Drivor'
+        }
         stage('Clean and Install'){
             steps {
               sh 'mvn clean install'
@@ -27,6 +30,7 @@ pipeline {
         }
         stage ('Deploy') {
             steps {
+               sh 'docker-compose -f docker-compose.dev.yml down'
                sh 'docker-compose -f docker-compose.dev.yml up -d --build'
             }
         }
