@@ -3,12 +3,14 @@ pipeline {
     tools {
         maven '3.6.3'
     }
-
     environment {
        DOCKERHUB_CREDENTIALS=credentials('dockerhub')
     }
 
     stages {
+        stage('SCM Checkout'){
+             git branch: 'develop', credentialsId: 'git_credentials', url: 'https://github.com/hoangnhat2003/Base_Backend_Drivor'
+        }
         stage('Clean and Install'){
             steps {
               sh 'mvn clean install'
@@ -25,8 +27,9 @@ pipeline {
               sh 'docker push nhathoang07/booking-backend:v1'
            }
         }
-        stage ('Deploy') {
+        stage ('Run Docker on Dev Server') {
             steps {
+               sh 'docker-compose -f docker-compose.dev.yml down'
                sh 'docker-compose -f docker-compose.dev.yml up -d --build'
             }
         }
