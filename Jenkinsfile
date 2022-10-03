@@ -3,6 +3,7 @@ pipeline {
     tools {
         maven '3.6.3'
     }
+
     environment {
        DOCKERHUB_CREDENTIALS=credentials('dockerhub')
     }
@@ -24,11 +25,11 @@ pipeline {
               sh 'docker push nhathoang07/booking-backend:v1'
            }
         }
-        stage ('Run Docker on Dev Server') {
+        stage ('Deploy') {
             steps {
-               sh 'docker-compose -f docker-compose.dev.yml down'
-               sh 'docker-compose -f docker-compose.dev.yml up -d --build'
-               sh 'docker image prune'
+              sh 'docker-compose -f docker-compose.dev.yml down'
+              sh 'docker-compose -f docker-compose.dev.yml up -d --build'
+              sh 'docker image prune'
             }
         }
     }
