@@ -76,6 +76,9 @@ services:
       - ES_USERNAME=admin
       - ES_PASSWORD=admin
       - ES_INDEX=booking
+      - ACCESS_KEY=AKIAZXLNCWVCFMS7WTWR
+      - SECRET_KEY=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
+      - BUCKET_NAME=booking-backend
     ports:
       - "8181:8080"
     depends_on:
