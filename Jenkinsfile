@@ -8,9 +8,6 @@ pipeline {
     }
 
     stages {
-        stage('SCM Checkout'){
-             git branch: 'develop', credentialsId: 'git_credentials', url: 'https://github.com/hoangnhat2003/Base_Backend_Drivor'
-        }
         stage('Clean and Install'){
             steps {
               sh 'mvn clean install'
